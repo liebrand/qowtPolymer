@@ -38,5 +38,15 @@ Polymer('qowt-section', {
   getFooterContent: function(type) {
     var footer = this.querySelector('[data-footer-type="' + type + '"');
     return footer.content.cloneNode(true);
+  },
+
+  cloneMe: function() {
+    var clone = this.cloneNode(false);
+    var headersFooters = this.querySelectorAll('template');
+    for (var i = 0; i < headersFooters.length; i++) {
+      clone.appendChild(headersFooters[i].cloneNode(true));
+    }
+    return clone;
   }
+
 });

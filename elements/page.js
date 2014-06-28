@@ -27,6 +27,7 @@ Polymer('qowt-page', {
   },
 
   isOverflowing: function() {
-    return this.$.pageContents.scrollHeight > this.$.pageContents.offsetHeight;
+    return this.$.contents.scrollHeight > this.$.contents.offsetHeight;
   }
+
 });

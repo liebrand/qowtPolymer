@@ -1,5 +1,5 @@
 
-function generateContent() {
+function init() {
   // fake the content creation coming in later than domReady
   window.setTimeout(doGenerateContent, 10);
 }
@@ -47,4 +47,11 @@ function doGenerateContent() {
     p.appendChild(createRun('proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'));
     section.appendChild(p);
   }
+
+  window.setTimeout(doPaginate, 10);
+}
+
+function doPaginate() {
+  var doc = document.querySelector('qowt-doc');
+  doc.paginate();
 }
