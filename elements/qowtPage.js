@@ -5,7 +5,7 @@ Polymer('qowt-page', {
     this.addEventListener('footer-changed', this.updateFooter);
   },
 
-  // TODO(jliebrand): remove duplication between header and footer funcs
+  // TODO(jliebrand): remove duplication between header and footer functions
   updateHeader: function() {
     // get header/footer information from FIRST section on page
     var section = this.querySelectorAll('qowt-section')[0];
