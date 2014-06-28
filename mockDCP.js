@@ -30,18 +30,12 @@ function doGenerateContent() {
       .appendChild(create('qowt-page'))
       .appendChild(create('qowt-section'));
 
-  var hdi = create('template');
-  hdi.content.appendChild(createPara('this is a header'));
-  hdi.setAttribute('data-header-type', 'odd');
-  var fdi = create('template');
-  fdi.content.appendChild(createPara('this is a footer'));
-  fdi.setAttribute('data-footer-type', 'odd');
 
-  section.appendChild(hdi);
-  hdi.dispatchEvent(new CustomEvent('header-changed', {bubbles: true}));
+  var hdi = section.createHeaderItem('odd', document.createDocumentFragment()
+      .appendChild(createPara('this is a header')));
 
-  section.appendChild(fdi);
-  fdi.dispatchEvent(new CustomEvent('footer-changed', {bubbles: true}));
+  var fdi = section.createFooterItem('odd', document.createDocumentFragment()
+      .appendChild(createPara('this is a footer')));
 
   for (var i = 0; i < 10; i++) {
     var p = createPara();
