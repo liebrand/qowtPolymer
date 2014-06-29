@@ -1,4 +1,8 @@
+/* jshint newcap: false */
 Polymer('qowt-page', {
+  /* jshint newcap: true */
+
+  jelte: 34,
 
   ready: function() {
     this.addEventListener('header-changed', this.updateHeader);
@@ -31,3 +35,6 @@ Polymer('qowt-page', {
   }
 
 });
+
+QowtElement.addMixin(QowtPage.prototype);
+FlowChildren.addMixin(QowtPage.prototype);

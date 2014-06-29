@@ -1,4 +1,6 @@
+/* jshint newcap: false */
 Polymer('qowt-doc', {
+  /* jshint newcap: true */
   ready: function() {
   },
   domReady: function() {

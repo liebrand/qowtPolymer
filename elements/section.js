@@ -1,4 +1,7 @@
+/* jshint newcap: false */
 Polymer('qowt-section', {
+  /* jshint newcap: true */
+
   created: function() {
     // debugger;
   },
@@ -17,6 +20,8 @@ Polymer('qowt-section', {
     hdi.content.appendChild(docFrag);
     hdi.setAttribute('data-header-type', type);
 
+    // TODO(jliebrand): should add these things to our shadow root
+    // so that they are not CHILDREN and thus will not get balanced/flowed
     this.appendChild(hdi);
     hdi.dispatchEvent(new CustomEvent('header-changed', {bubbles: true}));
   },
@@ -50,3 +55,6 @@ Polymer('qowt-section', {
   }
 
 });
+
+QowtElement.addMixin(QowtSection.prototype);
+FlowChildren.addMixin(QowtSection.prototype);
