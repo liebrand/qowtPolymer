@@ -6,4 +6,5 @@ Polymer('qowt-run', {
 });
 
 QowtElement.addMixin(QowtRun.prototype);
-FlowChildren.addMixin(QowtRun.prototype);
+// TODO(jliebrand): implement FlowWords
+// FlowWords.addMixin(QowtRun.prototype);

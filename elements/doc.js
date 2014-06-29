@@ -24,10 +24,8 @@ Polymer('qowt-doc', {
           this.appendChild(nextPage);
         }
 
-        page.flow(page.isOverflowing);
+        page.flow(page.isOverflowing.bind(page));
 
-      // } else if (page.isFlowing()) {
-      //   page.absorb();
       }
 
     }

@@ -29,13 +29,13 @@ function doGenerateContent() {
       .appendChild(create('qowt-section'));
 
 
-  section.createHeaderItem('odd', document.createDocumentFragment()
+  section.createHFItem('header', 'odd', document.createDocumentFragment()
       .appendChild(createPara('this is a header')));
 
-  section.createFooterItem('odd', document.createDocumentFragment()
+  section.createHFItem('footer', 'odd', document.createDocumentFragment()
       .appendChild(createPara('this is a footer')));
 
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 11; i++) {
     var p = createPara();
     p.appendChild(createRun('Lorem ipsum dolor sit amet, ' +
                             'consectetur adipisicing elit, sed do eiusmod'));

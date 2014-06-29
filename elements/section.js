@@ -10,46 +10,37 @@ Polymer('qowt-section', {
   domReady: function() {
   },
 
-  // TODO(jliebrand): combine the createHeaderItem and createFooterItem
-  // to reduce code duplication
-  createHeaderItem: function(type, docFrag) {
-    // TODO(jliebrand): should ensure we place these template
-    // elements at the beginning of our child list.
+  createHFItem: function(hf, pageType, docFrag) {
+    // debugger;
     // TODO(jliebrand): should REPLACE existing 'type' items
-    var hdi = document.createElement('template');
-    hdi.content.appendChild(docFrag);
-    hdi.setAttribute('data-header-type', type);
+    var hft = document.createElement('template');
+    hft.content.appendChild(docFrag);
+    hft.setAttribute('data-hf-type', hf);
+    hft.setAttribute('data-hf-page-type', pageType);
 
-    // TODO(jliebrand): should add these things to our shadow root
-    // so that they are not CHILDREN and thus will not get balanced/flowed
-    this.appendChild(hdi);
-    hdi.dispatchEvent(new CustomEvent('header-changed', {bubbles: true}));
+    this.$.headerFooterTemplates.appendChild(hft);
+    hft.dispatchEvent(new CustomEvent('header-footer-change', {bubbles: true}));
   },
-  createFooterItem: function(type, docFrag) {
-    // TODO(jliebrand): should ensure we place these template
-    // elements at the beginning of our child list.
-    // TODO(jliebrand): should REPLACE existing 'type' items
-    var fdi = document.createElement('template');
-    fdi.content.appendChild(docFrag);
-    fdi.setAttribute('data-footer-type', 'odd');
 
-    this.appendChild(fdi);
-    fdi.dispatchEvent(new CustomEvent('footer-changed', {bubbles: true}));
-  },
-  getHeaderContent: function(type) {
-    var header = this.querySelector('[data-header-type="' + type + '"');
+  getHFContent: function(hf, pageType) {
+    // debugger;
+    var templates = this.$.headerFooterTemplates;
+    var typeCheck = '[data-hf-type="' + hf + '"] ';
+    var pageCheck = '[data-hf-page-type="' + pageType + '"]';
+    var header = templates.querySelector(typeCheck + pageCheck);
     return header.content.cloneNode(true);
-  },
-  getFooterContent: function(type) {
-    var footer = this.querySelector('[data-footer-type="' + type + '"');
-    return footer.content.cloneNode(true);
   },
 
   cloneMe: function() {
+    // debugger;
     var clone = this.cloneNode(false);
-    var headersFooters = this.querySelectorAll('template');
+    var templates = this.$.headerFooterTemplates;
+    var headersFooters = templates.querySelectorAll('template');
     for (var i = 0; i < headersFooters.length; i++) {
-      clone.appendChild(headersFooters[i].cloneNode(true));
+      var hft = headersFooters[i];
+      var hfType = hft.getAttribute('data-hf-type');
+      var pageType = hft.getAttribute('data-hf-page-type');
+      clone.createHFItem(hfType, pageType, hft.content);
     }
     return clone;
   }
