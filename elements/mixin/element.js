@@ -6,6 +6,10 @@ window.QowtElement = {
     var funcs = {
       supports: function(action) {
         return this.supportedActions_.indexOf(action) !== -1;
+      },
+      isEmpty: function() {
+        // override if needed
+        return (this.childNodes.length === 0);
       }
     };
 
