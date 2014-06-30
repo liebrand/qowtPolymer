@@ -7,12 +7,13 @@ Polymer('qowt-doc', {
   },
 
   paginate: function(pageNum) {
+    debugger;
     pageNum = pageNum || 0;
     var page;
     var pages = this.querySelectorAll('qowt-page');
     if (pages && (page = pages[pageNum])) {
 
-      if (page.isOverflowing()) {
+      // if (page.isOverflowing()) {
         console.log('page %d is overflowing', pageNum);
 
         if (!page.flowInto) {
@@ -26,7 +27,7 @@ Polymer('qowt-doc', {
 
         page.flow(page.isOverflowing.bind(page));
 
-      }
+      // }
 
     }
   },

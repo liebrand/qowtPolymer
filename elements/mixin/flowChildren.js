@@ -5,13 +5,30 @@ window.FlowChildren = {
 
     var funcs = {
       /**
-       * Flows the children from "this" to "this.flowInto"
+       * Flows the children such that as many as possible are in "this"
+       * and the rest has been flowed to "this.flowInto".
+       * How many fit is decided by the passed in 'overflowingFunc'
+       *
        * Steps:
-       *   1- unflow all children (recursively) back to "this"
-       *   2- flow all children while overflowingFunc returns true
-       *   3- if first child in "flowInto" supports flow, then:
+       *   1 - if last child is already flowing, then reflow it
+       *   1a- if after that we are still overflowing AND the last child is
+       *       still flowing, then something went wrong (the child should
+       *       have flowed all the way in to this.flowInto and normalize)
+       *   1b- if we are no longer overflowing and the child is still
+       *       flowing then we are done overflowing
+       *   1c- if last child flowed completed to this.flowInto then go to step 2
+       *
+       *   2 - if overflowingFunc is true, then
+       *   2a- flow children from flowInto to this, else
+       *   2b- flow children from this to flowInto
+       *
+       *      (now we should no longer be overflowing)
+       *
+       *   3 - if first child in "flowInto" supports flow, then:
        *   3a- pull child back to "this"
        *   3b- call child.flow()
+       *
+       *   4 - normalize flow in case all children moved out/in
        *
        * @param {Function} overflowingFunc to indicate if we are overflowing
        */
@@ -21,14 +38,36 @@ window.FlowChildren = {
                           ' tried to flow without having a flowInto');
         }
 
-        // step 1 - unflow everything
-        this.unflow();
+        // step 1 - reflow last child
+        var child = this.lastElementChild;
+        if (child && child.supports('flow') && child.isFlowing()) {
+          // reflow
+          child.flow(overflowingFunc);
 
-        // step 2 - flow children
+          // now assert/check if we need to do more
+          if (overflowingFunc()) {
+            // we are still overflowing, so the child SHOULD have moved
+            // completely in to this.flowInto and should no longer be flowing
+            assert(!child.isFlowing(),
+              new Error('child should have flowed completely to flowInto'))
+          } else {
+            if (child.isFlowing()) {
+              // we're no longer overflowing, and child is still flowing
+              // so it has done it's job - there's nothing more to overflow
+              // or indeed to flow back in to 'this'
+              return true;
+            }
+          }
+        }
+
+        // step 2 - last child not flowing: flow rest of children
         this.flowChildren_(overflowingFunc);
 
         // step 3 - recurse in to 'edge child' (if it supports it)
-        this.recurseFlowChild_(overflowingFunc);
+        this.recurse_(overflowingFunc);
+
+        // step 4 - normalize in case we moved all content into this or flowInto
+        this.normalizeFlow();
       },
 
 
@@ -56,12 +95,15 @@ window.FlowChildren = {
 
       flowChildren_: function(overflowingFunc) {
         // binary search algorithm to flow the children
-        // NOTE: we start with Math.ceil (in case there is only one element)
-        // and then inside the loop use Math.floor to not get in to an
-        // eternal loop...
-        var half = Math.ceil(this.childElementCount / 2);
-        while (half > 0) {
 
+        // if we are overflowing, flow from 'this' else  from 'this.flowInto'
+        var src = overflowingFunc() ? this : this.flowInto;
+        var childrenToBalance = src.childElementCount || 0;
+
+        var half = Math.ceil(childrenToBalance / 2);
+        while (true) {
+          // flow children out if we are overflowing or
+          // pull them back in if we are not.
           var overflowing = overflowingFunc();
           for (var i = 0; i < half; i++) {
             if (overflowing) {
@@ -71,19 +113,26 @@ window.FlowChildren = {
             }
           }
 
-          half = Math.floor(half / 2);
-        }
-
-        // if we had an odd number of children, we could have now
-        // pulled in one too many elements
-        if (overflowingFunc()) {
-          DomUtils.insertAtStart(this.flowInto, this.lastElementChild);
-          if (overflowingFunc()) {
-            throw new Error('Should not be overflowing anymore! ' +
-                            'looks like algorithm is broken...');
+          if (half > 1) {
+            // go again
+            half = Math.ceil(half / 2);
+          } else {
+            // the final child is a make or break:
+            // we could have pulled it in if we weren't overflowing, but
+            // in doing so, caused us to overflow. So doulbe check and
+            // push out if needed
+            if (overflowingFunc()) {
+              DomUtils.insertAtStart(this.flowInto, this.lastElementChild);
+            }
+            break;
           }
         }
+
+        // assert we are no longer overflowing
+        assert(!overflowingFunc(), 'Should not be overflowing anymore! ' +
+                                   'looks like algorithm is broken...');
       },
+
 
       unflowChildren_: function() {
         // move all children from 'flowInto' back to 'this'
@@ -94,7 +143,7 @@ window.FlowChildren = {
 
       // check if the first child in 'flowInto' supports flow,
       // if so, pull it back in to 'this' and flow it
-      recurseFlowChild_: function(overflowingFunc) {
+      recurse_: function(overflowingFunc) {
         var child = this.flowInto.firstElementChild;
         if (child && child.supports('flow')) {
 
