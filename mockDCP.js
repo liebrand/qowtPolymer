@@ -37,18 +37,16 @@ function doGenerateContent() {
 
   for (var i = 0; i < 11; i++) {
     var p = createPara();
-    p.appendChild(createRun('Lorem ipsum dolor sit amet, ' +
-                            'elit, sed do eiusmod. '));
-    p.appendChild(createRun('tempor incididunt ut labore et dolore magna ' +
-                            'aliqua. Ut enim ad minim veniam,'));
-    p.appendChild(createRun('quis nostrud exercitation ullamco laboris nisi ' +
-                            'ut aliquip ex ea commodo'));
-    p.appendChild(createRun('consequat. Duis aute irure dolor in ' +
-                            'reprehenderit in voluptate velit esse'));
-    p.appendChild(createRun('cillum dolore eu fugiat nulla pariatur. ' +
-                            'Excepteur sint occaecat cupidatat non'));
-    p.appendChild(createRun('proident, sunt in culpa qui officia deserunt ' +
-                            'mollit anim id est laborum.'));
+    p.appendChild(createRun('Monday Tuesday Wednesday Thursday Friday ' +
+                            'Saturday Sunday. '));
+    p.appendChild(createRun('January February March April May June July ' +
+                            'August September October November December. '));
+    p.appendChild(createRun('One two three four five six seven eight ' +
+                            'nine ten. '));
+    p.appendChild(createRun('Alpha bravo charlie delta echo foxtrot golf ' +
+                            'hotel india juliet kilo lima mike november ' +
+                            'oscar papa quebec romeo sierra tango uniform ' +
+                            'victor whiskey x-ray yankee zulu.'));
     section.appendChild(p);
   }
 
