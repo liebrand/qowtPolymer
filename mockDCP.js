@@ -49,11 +49,4 @@ function doGenerateContent() {
                             'victor whiskey x-ray yankee zulu.'));
     section.appendChild(p);
   }
-
-  // window.setTimeout(doPaginate, 10);
 }
-
-// function doPaginate() {
-//   var doc = document.querySelector('qowt-doc');
-//   doc.paginate();
-// }

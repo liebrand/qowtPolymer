@@ -53,11 +53,18 @@ window.FlowChildren = {
           // reflow
           child.flow(overflowingFunc);
 
+          // if after flowing the child still exists in the DOM then it
+          // should be guaranteed that the page is no longer overflowing.
+          // if the page is still overflowing, the content of the child
+          // should have moved completely to flowInto, and the child element
+          // should have been removed from the DOM as part of it's normalize
+
           // now assert/check if we need to do more
           if (overflowingFunc()) {
-            // we are still overflowing, so the child SHOULD have moved
-            // completely in to this.flowInto and should no longer be flowing
-            assert(!child.isFlowing(),
+            // we are still overflowing, so the content of child SHOULD have
+            // moved completely in to this.flowInto and the child should thus
+            // no longer be in the DOM.
+            assert(!child.ownerDocument.body.contains(child),
               new Error('child should have flowed completely to flowInto'))
           } else {
             if (child.isFlowing()) {
@@ -142,10 +149,6 @@ window.FlowChildren = {
             break;
           }
         }
-
-        // assert we are no longer overflowing
-        assert(!overflowingFunc(), 'Should not be overflowing anymore! ' +
-                                   'looks like algorithm is broken...');
       },
 
 

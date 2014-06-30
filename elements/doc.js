@@ -17,7 +17,10 @@ Polymer('qowt-doc', {
       // get the first page
       page = this.querySelector('qowt-page');
     }
-    if (page instanceof QowtPage) {
+    // when we remove a page, that too causes a mutation record and
+    // thus a 'page-changed'. Make sure we dont bother paginating pages
+    // which are not in the document
+    if (page instanceof QowtPage && page.ownerDocument.body.contains(page)) {
 
       if (!page.flowInto) {
         var nextPage = page.createFlowInto();
@@ -28,13 +31,12 @@ Polymer('qowt-doc', {
         this.appendChild(nextPage);
       }
 
+      console.time('paginate');
       page.flow(page.isOverflowing.bind(page));
 
-      if (nextPage && nextPage.isEmpty()) {
-        if (nextPage.parentNode) {
-          nextPage.parentNode.removeChild(nextPage);
-        }
-      }
+      page.normalizeFlow()
+      console.timeEnd('paginate');
+
     }
   },
 

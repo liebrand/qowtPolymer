@@ -7,6 +7,15 @@ window.assert = function(expression, msg) {
     result = expression;
   }
   if (!result) {
+    debugger;
     throw new Error('ASSERT FAILED: ' + msg);
   }
-}
+};
+
+
+(function() {
+  var id = 0;
+  window.generateId = function() {
+    return id++;
+  };
+}());

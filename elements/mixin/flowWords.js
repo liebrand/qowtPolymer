@@ -83,7 +83,7 @@ window.FlowWords = {
             // in doing so, caused us to overflow. So doulbe check and
             // push out if needed
             if (overflowingFunc()) {
-              theirWords.shift(theseWords.pop());
+              theirWords.unshift(theseWords.pop());
               this.setText_(theseWords, theirWords);
             }
             break;
@@ -94,16 +94,12 @@ window.FlowWords = {
         // than at the start of 'flowInto'
         var changed = false;
         while (theirWords[0] && theirWords[0].match(/^\s*$/) !== null) {
-          theseWords.push(theirWords.unshift());
+          theseWords.push(theirWords.shift());
           changed = true;
         }
         if (changed) {
           this.setText_(theseWords, theirWords);
         }
-
-        // assert we are no longer overflowing
-        assert(!overflowingFunc(), 'Should not be overflowing anymore! ' +
-                                   'looks like algorithm is broken...');
       },
 
 

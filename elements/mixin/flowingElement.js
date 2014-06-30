@@ -14,8 +14,7 @@ window.FlowingElement = {
         return this.getAttribute('data-named-flow');
       },
       createNamedFlow: function() {
-        // TODO(jliebrand): this is NOT unique!
-        var flow = 'FLOW-' + Math.round(Math.random(1000)*1000);
+        var flow = 'FLOW-' + generateId();
         this.setNamedFlow(flow);
         return flow;
       },
@@ -67,13 +66,16 @@ window.FlowingElement = {
           var current = chain[0];
 
           // remove empty nodes from the flow
+          var loopCount=0;
           while (current) {
             var next = current.flowInto;
             if (current.isEmpty()) {
               current.removeFromFlow();
             }
             current = next;
+            loopCount++;
           }
+          assert(loopCount === chain.length, 'chain broken!');
 
           // now if we are left with only one node, then clear its flow
           chain = doc.querySelectorAll(flowSelector);
