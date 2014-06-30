@@ -38,7 +38,7 @@ function doGenerateContent() {
   for (var i = 0; i < 11; i++) {
     var p = createPara();
     p.appendChild(createRun('Lorem ipsum dolor sit amet, ' +
-                            'elit, sed do eiusmod'));
+                            'elit, sed do eiusmod. '));
     p.appendChild(createRun('tempor incididunt ut labore et dolore magna ' +
                             'aliqua. Ut enim ad minim veniam,'));
     p.appendChild(createRun('quis nostrud exercitation ullamco laboris nisi ' +
@@ -52,10 +52,10 @@ function doGenerateContent() {
     section.appendChild(p);
   }
 
-  window.setTimeout(doPaginate, 10);
+  // window.setTimeout(doPaginate, 10);
 }
 
-function doPaginate() {
-  var doc = document.querySelector('qowt-doc');
-  doc.paginate();
-}
+// function doPaginate() {
+//   var doc = document.querySelector('qowt-doc');
+//   doc.paginate();
+// }

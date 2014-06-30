@@ -41,6 +41,15 @@ window.FlowChildren = {
         // step 1 - reflow last child
         var child = this.lastElementChild;
         if (child && child.supports('flow') && child.isFlowing()) {
+          if (!child.flowInto) {
+            var childFlowInto = child.createFlowInto();
+
+            // TODO(jliebrand): could optimize by adding this to the DOM
+            // *after* the flow is done; thereby saving layouts when
+            // content is pushed in to the nextPage...
+            DomUtils.insertAtStart(this.flowInto, childFlowInto);
+          }
+
           // reflow
           child.flow(overflowingFunc);
 
@@ -76,8 +85,11 @@ window.FlowChildren = {
        * Steps:
        *    1- if this.lastElementChild is flowed, unflow it
        *    2- move all children from 'flowInto' back in to 'this'
+       *    3- normalize in case we moved all children
        */
       unflow: function() {
+        throw new Error('TODO: should unflow entire CHAIN!');
+
         if (!this.flowInto) {
           throw new Error(this.nodeName +
                           ' tried to unflow without having a flowInto');
@@ -88,6 +100,9 @@ window.FlowChildren = {
 
         // step 2 - unflow all children back in to 'this'
         this.unflowChildren_();
+
+        // step 3 - normalize flow
+        this.normalizeFlow();
       },
 
 
@@ -96,11 +111,11 @@ window.FlowChildren = {
       flowChildren_: function(overflowingFunc) {
         // binary search algorithm to flow the children
 
-        // if we are overflowing, flow from 'this' else  from 'this.flowInto'
+        // if we are overflowing, flow from 'this' else from 'this.flowInto'
         var src = overflowingFunc() ? this : this.flowInto;
-        var childrenToBalance = src.childElementCount || 0;
+        var childrenToFlow = src.childElementCount || 0;
 
-        var half = Math.ceil(childrenToBalance / 2);
+        var half = Math.ceil(childrenToFlow / 2);
         while (true) {
           // flow children out if we are overflowing or
           // pull them back in if we are not.

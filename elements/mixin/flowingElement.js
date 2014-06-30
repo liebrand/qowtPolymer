@@ -29,8 +29,12 @@ window.FlowingElement = {
       },
       removeFromFlow: function() {
         // unlink this from the flow
-        this.flowFrom.flowInto = this.flowInto;
-        this.flowInto.flowFrom = this.flowFrom;
+        if (this.flowFrom) {
+          this.flowFrom.flowInto = this.flowInto;
+        }
+        if (this.flowInto) {
+          this.flowInto.flowFrom = this.flowFrom;
+        }
         // reset (for good measure) and remove this from document
         this.clearNamedFlow();
         if (this.parentNode) {
@@ -43,7 +47,7 @@ window.FlowingElement = {
         this.flowInto = this.cloneMe();
         this.flowInto.removeAttribute('id');
         this.flowInto.setNamedFlow(namedFlow);
-        this.flowFrom = this;
+        this.flowInto.flowFrom = this;
         return this.flowInto;
       },
       cloneMe: function() {
