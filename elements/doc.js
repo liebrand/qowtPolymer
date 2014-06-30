@@ -34,7 +34,7 @@ Polymer('qowt-doc', {
       console.time('paginate');
       page.flow(page.isOverflowing.bind(page));
 
-      page.normalizeFlow()
+      page.normalizeFlow();
       console.timeEnd('paginate');
 
     }

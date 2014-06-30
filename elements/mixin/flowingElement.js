@@ -14,7 +14,7 @@ window.FlowingElement = {
         return this.getAttribute('data-named-flow');
       },
       createNamedFlow: function() {
-        var flow = 'FLOW-' + generateId();
+        var flow = 'FLOW-' + window.generateId();
         this.setNamedFlow(flow);
         return flow;
       },
@@ -59,7 +59,6 @@ window.FlowingElement = {
       normalizeFlow: function() {
         var flowName = this.namedFlow();
         if (flowName) {
-          var i;
           var doc = this.ownerDocument;
           var flowSelector = '[data-named-flow="' + flowName + '"]';
           var chain = doc.querySelectorAll(flowSelector);

@@ -7,7 +7,9 @@ window.assert = function(expression, msg) {
     result = expression;
   }
   if (!result) {
+    /* jshint debug: true */
     debugger;
+    /* jshint debug: false */
     throw new Error('ASSERT FAILED: ' + msg);
   }
 };

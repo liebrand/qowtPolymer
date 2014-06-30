@@ -74,6 +74,7 @@
       "FlowChildren": true,
       "FlowingElement": true,
       "FlowWords": true,
+      "PubSub": true,
 
       "QowtElement": true,
       "QowtPage": true,

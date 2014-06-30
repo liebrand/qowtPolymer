@@ -65,7 +65,7 @@ window.FlowChildren = {
             // moved completely in to this.flowInto and the child should thus
             // no longer be in the DOM.
             assert(!child.ownerDocument.body.contains(child),
-              new Error('child should have flowed completely to flowInto'))
+              new Error('child should have flowed completely to flowInto'));
           } else {
             if (child.isFlowing()) {
               // we're no longer overflowing, and child is still flowing
@@ -97,19 +97,19 @@ window.FlowChildren = {
       unflow: function() {
         throw new Error('TODO: should unflow entire CHAIN!');
 
-        if (!this.flowInto) {
-          throw new Error(this.nodeName +
-                          ' tried to unflow without having a flowInto');
-        }
+        // if (!this.flowInto) {
+        //   throw new Error(this.nodeName +
+        //                   ' tried to unflow without having a flowInto');
+        // }
 
-        // step 1 - recurse unflow child
-        this.recurseUnflowChild_();
+        // // step 1 - recurse unflow child
+        // this.recurseUnflowChild_();
 
-        // step 2 - unflow all children back in to 'this'
-        this.unflowChildren_();
+        // // step 2 - unflow all children back in to 'this'
+        // this.unflowChildren_();
 
-        // step 3 - normalize flow
-        this.normalizeFlow();
+        // // step 3 - normalize flow
+        // this.normalizeFlow();
       },
 
 

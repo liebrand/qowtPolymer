@@ -15,7 +15,7 @@ window.PubSub = {
     if (listeners) {
       listeners.forEach(function(listener) {
         listener.call(null, data);
-      })
+      });
     }
   }
 };

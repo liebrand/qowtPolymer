@@ -7,6 +7,7 @@ module.exports = function(grunt) {
       'Gruntfile.js',
 
       '**/*.js',
+      '!**/mutation-summary.js',
       '!bower_components/**/*',
       '!node_modules/**/*'
     ],
