@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="utils/domUtils.js"></script>
+    <script src="utils/miscUtils.js"></script>
+    <script src="utils/mutation-summary.js"></script>
+    <script src="utils/pubsub.js"></script>
+
+    <script src="bower_components/platform/platform.js"></script>
+
+    <link rel="import" href="elements/styles/styles.html">
+  </head>
+  <body onload="init()">
+
+    <p class="heading1">This is a heading</p>
+
+    <p class="normal">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+
+
+    <script type="text/javascript" charset="utf-8">
+
+    function init() {
+
+      // MOCK DCP DATA
+      // obviously i made these easy, but they could be your existing schemas
+      var normalStyle = {
+        name: 'normal',
+        rules: {
+          'font-family': 'Arial',
+          'font-size': '12pt'
+        }
+      };
+      var headingStyle = {
+        name: 'heading1',
+        basedOn: 'normal',
+        rules: {
+          'font-size': '18pt'
+        }
+      };
+      var styles = [normalStyle, headingStyle];
+
+
+      // simulate what the dcpStylesHandler would do:
+      var qowtStyles = document.createElement('qowt-styles');
+      document.head.appendChild(qowtStyles);
+
+      // simulate what the dcpStyleHandler would do for each style:
+      var v = {
+        node: qowtStyles
+      };
+      for (var i = 0; i < styles.length; i++) {
+        if (v.node instanceof QowtStyles) {
+          v.node.addStyle(styles[i]);
+        }
+      }
+
+    }
+
+    </script>
+
+  </body>
+</html>
