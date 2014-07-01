@@ -143,7 +143,7 @@ window.FlowChildren = {
             // we could have pulled it in if we weren't overflowing, but
             // in doing so, caused us to overflow. So doulbe check and
             // push out if needed
-            if (overflowingFunc()) {
+            if (overflowingFunc() && this.lastElementChild) {
               DomUtils.insertAtStart(this.flowInto, this.lastElementChild);
             }
             break;

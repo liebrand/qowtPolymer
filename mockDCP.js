@@ -24,6 +24,47 @@ function doGenerateContent() {
     }
     return p;
   }
+
+  function createParas(number) {
+    var frag = document.createDocumentFragment();
+
+    for (var i = 0; i < number; i++) {
+      var p = createPara();
+      p.appendChild(createRun('Monday Tuesday Wednesday Thursday Friday ' +
+                              'Saturday Sunday. '));
+      p.appendChild(createRun('January February March April May June July ' +
+                              'August September October November December. '));
+      p.appendChild(createRun('One two three four five six seven eight ' +
+                              'nine ten. '));
+      p.appendChild(createRun('Alpha bravo charlie delta echo foxtrot golf ' +
+                              'hotel india juliet kilo lima mike november ' +
+                              'oscar papa quebec romeo sierra tango uniform ' +
+                              'victor whiskey x-ray yankee zulu.'));
+      frag.appendChild(p);
+    }
+    return frag;
+  }
+
+  function createTable(tableDef) {
+    var frag = document.createDocumentFragment();
+    var table = new QowtTable();
+    frag.appendChild(table);
+
+    for (var rowIndex = 0; rowIndex < tableDef.length; rowIndex++) {
+      var row = new QowtTableRow();
+      table.appendChild(row);
+
+      var rowDef = tableDef[rowIndex];
+      for (var cellIndex = 0; cellIndex < rowDef.length; cellIndex++) {
+        var cell = new QowtTableCell();
+        row.appendChild(cell);
+
+        cell.appendChild(createPara(rowDef[cellIndex]));
+      }
+    }
+    return frag;
+  }
+
   var section = body.appendChild(create('qowt-doc'))
       .appendChild(create('qowt-page'))
       .appendChild(create('qowt-section'));
@@ -35,18 +76,13 @@ function doGenerateContent() {
   section.createHFItem('footer', 'odd', document.createDocumentFragment()
       .appendChild(createPara('this is a footer')));
 
-  for (var i = 0; i < 11; i++) {
-    var p = createPara();
-    p.appendChild(createRun('Monday Tuesday Wednesday Thursday Friday ' +
-                            'Saturday Sunday. '));
-    p.appendChild(createRun('January February March April May June July ' +
-                            'August September October November December. '));
-    p.appendChild(createRun('One two three four five six seven eight ' +
-                            'nine ten. '));
-    p.appendChild(createRun('Alpha bravo charlie delta echo foxtrot golf ' +
-                            'hotel india juliet kilo lima mike november ' +
-                            'oscar papa quebec romeo sierra tango uniform ' +
-                            'victor whiskey x-ray yankee zulu.'));
-    section.appendChild(p);
-  }
+  section.appendChild(createParas(2));
+
+  section.appendChild(createTable([
+    ['one', 'two', 'three', 'four'],
+    ['this', 'row is very big, or at least its bigger than the other rows with some data that just keeps on going until we are at the end of this cell', 'small', 'foo'],
+    ['and', 'then', 'some', 'bar']
+  ]));
+
+  section.appendChild(createParas(9));
 }
