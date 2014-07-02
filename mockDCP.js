@@ -80,7 +80,7 @@ function doGenerateContent() {
 
   section.appendChild(createTable([
     ['one', 'two', 'three', 'four'],
-    ['this', 'row is very big, or at least its bigger than the other rows with some data that just keeps on going until we are at the end of this cell', 'small', 'foo'],
+    ['row is very big, or at least its bigger than the other rows with some data that just keeps on ', 'row is very big, or at least its bigger than the other rows with some data that just keeps on going until we are at the end of this cell', 'small', 'foo'],
     ['and', 'then', 'some', 'bar']
   ]));
 

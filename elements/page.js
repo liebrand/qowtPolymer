@@ -54,6 +54,6 @@ Polymer('qowt-page', {
 });
 
 
-TODO: this wont work... polymer call is not guaranteed to produce ctor!
+// TODO: this wont work... polymer call is not guaranteed to produce ctor!
 QowtElement.addMixin(QowtPage.prototype);
 FlowChildren.addMixin(QowtPage.prototype);

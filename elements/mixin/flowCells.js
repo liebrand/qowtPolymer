@@ -8,6 +8,18 @@ window.FlowCells = {
       /**
        * This will recurse in to each child (aka cell) and "flow" it
        *
+       * 1 - make sure all cell's have their own 'flowInto's
+       * 2 - move all content to their flowInto's
+       *     otherwise the overflowingFunc is no good to us when
+       *     flowing an individual cell (since another cell in the
+       *     row might still be causing the page to overflow)
+       * 3 - flow the tallest cell using the overflowingFunc. This will
+       *     now ensure our row "fits" on the page
+       * 4 - now flow the other cells using a custom overflowing
+       *     function that will return true if the cell is heigher than
+       *     our row; this will ensure we dont grow the row further
+       * 5 - normalize
+       *
        * @param {boolean} name argument for x y z
        */
       flow: function(overflowingFunc) {
@@ -16,58 +28,30 @@ window.FlowCells = {
                           ' tried to flow without having a flowInto');
         }
 
-        // step 1a - get meta data on cells
-        var nonFlowingCells = [];
-        var cellMetaData = [];
-        for (var i = 0; i < this.childElementCount; i++) {
-          var cell = this.children[i];
-          if (cell.supports('flow') && !cell.isFlowing()) {
-            nonFlowingCells.push(cell);
-          }
-          cellMetaData.push({
-            cell: cell,
-            height: cell.contentHeight()
-          });
-        }
-        assert(
-          nonFlowingCells.length === 0 ||
-          nonFlowingCells.length === this.childElementCount,
-          'either all cells should be flowing or not');
+        // step 1 - make sure all cells have their own 'flowInto's
+        this.constructFlowIntos_();
 
-        // step 1b - make sure all cells are flowing
-        for (var i = 0; i < nonFlowingCells.length; i++) {
-          var cellFlowInto = nonFlowingCells[i].createFlowInto();
-          // note: uses insert at END to make sure the
-          // cells in our row.flowInto are correctly aligned
-          DomUtils.insertAtEnd(this.flowInto, cellFlowInto);
+        // step 2 - move all content to their flowInto's
+        this.forceFlowAllContent_();
+
+        // step 3 - flow the tallest cell using the overflowingFunc
+        var cellMetaData = this.getCellMetaData_(this.flowInto);
+        var tallestMetaData = cellMetaData.shift();
+        var tallestCell = this.children[tallestMetaData.cellIndex];
+        tallestCell.flow(overflowingFunc);
+
+        // step 4 - now flow the remaining cells using a custom overflowing func
+        var cachedRowHeight = this.offsetHeight;
+        var rowOverflowing = function() {
+          return this.offsetHeight > cachedRowHeight;
+        };
+
+        for (var i = 0; i < cellMetaData.length; i++) {
+          var cell = this.children[cellMetaData[i].cellIndex];
+          cell.flow(rowOverflowing.bind(this));
         }
 
-        // step 2 - sort cells by height
-        cellMetaData = cellMetaData.sort(function(a, b) {
-          return a.height < b.height;
-        });
-
-        // step 3 - from tallest to shortest, flow
-        for (var i = 0; i < this.childElementCount; i++) {
-          var cell = cellMetaData[i].cell;
-          cell.flow(overflowingFunc);
-
-          // TODO(jliebrand): once the parent overflowingFunc returns false
-          // then we need to pass in our own overflowingfunc to the cells
-          // where they should flow for as long as their contentHeight
-          // does not exceed their own td height...
-          // TODO(jliebrand): think about how the "once no longer overflowing"
-          // works for REFLOW...
-          // SHOULD be straight forward; similar to other flow algorithms:
-          // 1- pick source (this or flowInto)
-          // 2- pick tallest cell on that source
-          // 3- flow that cell using given overflowingFunc
-          // 4- now flow the rest of the cells in tallest to shortest order
-          //    using a new overflowing func that checks the child cell's
-          //    content height against this rows own offsetHeight
-        }
-
-        // step 4 - normalize in case this or flowInto have ONLY empty cells
+        // step 5 - normalize in case this or flowInto have ONLY empty cells
         this.normalizeFlow();
       },
 
@@ -78,6 +62,46 @@ window.FlowCells = {
 
       // ----------------------- PRIVATE ------------------
 
+      constructFlowIntos_: function() {
+        var nonFlowingCellsSelector = ':scope > :not([data-named-flow])';
+        var nonFlowingCells = this.querySelectorAll(nonFlowingCellsSelector)
+        assert(
+          nonFlowingCells.length === 0 ||
+          nonFlowingCells.length === this.childElementCount,
+          'Either all cells should be flowing or none should be');
+        for (var i = 0; i < nonFlowingCells.length; i++) {
+          var cellFlowInto = nonFlowingCells[i].createFlowInto();
+          DomUtils.insertAtEnd(this.flowInto, cellFlowInto);
+        }
+      },
+
+      forceFlowAllContent_: function() {
+        for (var i = 0; i < this.childElementCount; i++) {
+          var cell = this.children[i];
+          // TODO(jliebrand): using flow(function(){return true}) is expensive
+          // should we add a forceFlowAllContent() to FlowingElement mixin?
+          cell.flow(function(){return true;});
+        }
+      },
+
+      getCellMetaData_: function(from) {
+        // get meta data on cells in 'from'
+        var cellMetaData = [];
+        for (var i = 0; i < from.childElementCount; i++) {
+          var cell = from.children[i];
+          cellMetaData.push({
+            cellIndex: i,
+            height: cell.contentHeight()
+          });
+        }
+
+        // sort data by height
+        cellMetaData = cellMetaData.sort(function(a, b) {
+          return a.height < b.height;
+        });
+
+        return cellMetaData;
+      }
 
     };
 
