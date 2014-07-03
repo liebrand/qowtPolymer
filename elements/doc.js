@@ -45,28 +45,44 @@ Polymer('qowt-doc', {
   // ---------------------- PRIVATE ---------------------
 
   handleKeyDown_: function(evt) {
-    // console.log('keydown');
+    debugger;
+    var topLevelElements = [];
+    var sel = window.getSelection();
+    if (sel.rangeCount > 0) {
+      var range = sel.getRangeAt(0);
+      var walker = RangeUtils.createWalker(range);
+      while (walker.nextNode()) {
+        var node = walker.referenceNode;
+        while(node && !(node.parentNode instanceof QowtSection)) {
+          node = node.parentNode;
+        }
+        if (node && node.parentNode instanceof QowtSection) {
+          topLevelElements.push(node);
+        }
+        topLevelElements = ArrayUtils.unique(topLevelElements);
+      }
+    }
 
-    // // hardcode get the span; should get it from the current selection?
-    // var page = this.children[0];
-    // var flowedSpan = page.querySelector('span[data-named-flow]');
+    // make sure all pages ignore any changes we make during unflow since
+    // we do NOT want to paginate because of unflowing...
+    var pages = document.querySelectorAll('qowt-page');
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].ignoreMutations();
+    }
 
-    // // make sure all pages ignore any changes we make during unflow since
-    // // we do NOT want to paginate because of unflowing...
-    // var pages = document.querySelectorAll('qowt-page');
-    // pages.forEach(function(page) {
-    //   page.ignoreMutations();
-    // });
+    // unflow all relevant top level elements
+    topLevelElements.forEach(function(element) {
+      if (element.supports('flow') && element.isFlowing()) {
+        element.unflow();
+      }
+    })
 
-    // // now unflow the span
-    // flowedSpan.unflow();
-
-    // // and now re-enable the pages listening for mutations again so
-    // // that the subsequent edit that will happen WILL be picked up, and
-    // // it WILL cause a re-paginate
-    // pages.forEach(function(page) {
-    //   page.listenForMutations();
-    // });
+    // and now re-enable the pages listening for mutations again so
+    // that the subsequent edit that will happen WILL be picked up, and
+    // it WILL cause a re-paginate
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].listenForMutations();
+    }
   },
 
   handlePageChanged_: function(details) {

@@ -1,4 +1,3 @@
-
 window.RangeUtils = {
 
   RANGE_BEFORE: 0,
@@ -26,7 +25,7 @@ window.RangeUtils = {
    */
   compareNode: function(range, node) {
     var result;
-    if(!range || !node) {
+    if (!range || !node) {
       throw new Error('missing arguments.');
     }
 
@@ -34,21 +33,19 @@ window.RangeUtils = {
     var nodeRange = document.createRange();
     nodeRange.selectNodeContents(node);
 
-    if(range.compareBoundaryPoints(Range.START_TO_END, nodeRange) <= 0) {
+    if (range.compareBoundaryPoints(Range.START_TO_END, nodeRange) <= 0) {
       // The selection is entirely before the node.
       result = this.RANGE_BEFORE;
-    }
-    else {
-      if(range.compareBoundaryPoints(Range.END_TO_START, nodeRange) >= 0) {
+    } else {
+      if (range.compareBoundaryPoints(Range.END_TO_START, nodeRange) >= 0) {
         // The selection is entirely after the node.
         result = this.RANGE_AFTER;
-      }
-      else {
+      } else {
         // There is some intersection of selection and node.
         var startPoints =
-            range.compareBoundaryPoints(Range.START_TO_START, nodeRange);
+          range.compareBoundaryPoints(Range.START_TO_START, nodeRange);
         var endPoints =
-            range.compareBoundaryPoints(Range.END_TO_END, nodeRange);
+          range.compareBoundaryPoints(Range.END_TO_END, nodeRange);
 
 
         if (startPoints < 0) {
@@ -77,5 +74,28 @@ window.RangeUtils = {
     }
 
     return result;
+  },
+
+  createWalker: function(range) {
+    var walker;
+    var ancestor = range.commonAncestorContainer;
+    // Iterate through the children of the common ancestor.
+    walker = document.createNodeIterator(
+      ancestor,
+      NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+        acceptNode: function(node) {
+          var comparison = RangeUtils.compareNode(range, node);
+          if (comparison !== RangeUtils.RANGE_BEFORE &&
+              comparison !== RangeUtils.RANGE_AFTER) {
+            return NodeFilter.FILTER_ACCEPT;
+          } else {
+            return NodeFilter.FILTER_SKIP;
+          }
+        }
+      },
+      false);
+
+    return walker;
   }
-}
+
+};
