@@ -27,11 +27,21 @@
           ' tried to flow without having a flowInto');
       }
 
+      // normalize ourselves first, so we dont have to deal with
+      // multiple TEXT_NODEs as children. NOTE: this is different from
+      // normalizeFlow !
+      this.normalize();
+
+      // in case the caret is inside of us, cache it;
+      this.cacheSelection_();
+
       // step 1 - flow the words
       this.flowWords_(overflowingFunc);
 
       // step 2 - normalize in case we moved all content into this or flowInto
       this.normalizeFlow();
+
+      this.restoreSelection_();
     },
 
 
@@ -42,7 +52,15 @@
      *    2- move all children from 'flowInto' back in to 'this'
      */
     unflow: function() {
-      throw new Error('TODO word unflow');
+      console.log('flow words unflow');
+      if (!this.flowInto) {
+        throw new Error(this.nodeName +
+          ' tried to unflow without having a flowInto');
+      }
+      this.textContent = this.textContent + this.flowInto.textContent;
+      this.flowInto.textContent = '';
+
+      this.normalizeFlow();
     },
 
 
@@ -50,7 +68,6 @@
 
     flowWords_: function(overflowingFunc) {
       // binary search algorithm to flow the words
-
       // if we are overflowing, flow from 'this' else from 'this.flowInto'
       var theseWords = this.textContent ? this.textContent.split(/\b/) : [];
       var theirWords = this.flowInto.textContent ?
@@ -103,12 +120,58 @@
       }
     },
 
+    // ------------------------- PRIVATE ---------------------------
 
     unflowWords_: function() {},
 
     setText_: function(theseWords, theirWords) {
       this.textContent = theseWords.join('');
       this.flowInto.textContent = theirWords.join('');
+    },
+
+    cacheSelection_: function() {
+      this.cache_ = {};
+      var sel = window.getSelection();
+      if (sel.rangeCount > 0) {
+        var range = sel.getRangeAt(0);
+        var comparison = RangeUtils.compareNode(range, this);
+        if (comparison !== RangeUtils.RANGE_BEFORE &&
+            comparison !== RangeUtils.RANGE_AFTER) {
+          // selection is inside of us somehow, cache it
+          if (this.contains(range.startContainer)) {
+            this.cache_.startOffset = range.startOffset;
+          }
+          if (this.contains(range.endContainer)) {
+            this.cache_.endOffset = range.endOffset;
+          }
+        }
+      }
+    },
+    restoreSelection_: function() {
+      if (this.firstChild && this.firstChild.nodeType === Node.TEXT_NODE) {
+        var range;
+        if (this.cache_.startOffset || this.cache_.endOffset) {
+          var sel = window.getSelection();
+          if (sel.rangeCount === 0) {
+            // creat a new range and set both start and end
+            // set to zero if we dont have either cached
+            range = document.createRange();
+            range.setStart(this.firstChild, this.cache_.startOffset || 0);
+            range.setEnd(this.firstChild, this.cache_.endOffset || 0);
+          } else {
+            // update existing cache, only update the point(s) we have cached
+            range = sel.getRangeAt(0);
+            if (this.cache_.startOffset) {
+              range.setStart(this.firstChild, this.cache_.startOffset);
+            }
+            if (this.cache_.endOffset) {
+              range.setEnd(this.firstChild, this.cache_.endOffset);
+            }
+          }
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
     }
 
   });

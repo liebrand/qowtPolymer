@@ -78,11 +78,11 @@ function doGenerateContent() {
 
   section.appendChild(createParas(2));
 
-  section.appendChild(createTable([
-    ['one', 'two', 'three', 'four'],
-    ['row is very big, or at least its bigger than the other rows with some data that just keeps on ', 'row is very big, or at least its bigger than the other rows with some data that just keeps on going until we are at the end of this cell', 'small', 'foo'],
-    ['and', 'then', 'some', 'bar']
-  ]));
+  // section.appendChild(createTable([
+  //   ['one', 'two', 'three', 'four'],
+  //   ['row is very big, or at least its bigger than the other rows with some data that just keeps on ', 'row is very big, or at least its bigger than the other rows with some data that just keeps on going until we are at the end of this cell', 'small', 'foo'],
+  //   ['and', 'then', 'some', 'bar']
+  // ]));
 
   section.appendChild(createParas(9));
 }

@@ -6,6 +6,7 @@ Polymer('qowt-doc', {
   },
   attached: function() {
     PubSub.subscribe('page-changed', this.handlePageChanged_.bind(this));
+    document.addEventListener('keydown', this.handleKeyDown_.bind(this));
   },
   ready: function() {
   },
@@ -31,16 +32,42 @@ Polymer('qowt-doc', {
         this.appendChild(nextPage);
       }
 
-      console.time('paginate');
+      // console.time('paginate');
+      console.log('paginate');
       page.flow(page.isOverflowing.bind(page));
 
       page.normalizeFlow();
-      console.timeEnd('paginate');
+      // console.timeEnd('paginate');
 
     }
   },
 
   // ---------------------- PRIVATE ---------------------
+
+  handleKeyDown_: function(evt) {
+    // console.log('keydown');
+
+    // // hardcode get the span; should get it from the current selection?
+    // var page = this.children[0];
+    // var flowedSpan = page.querySelector('span[data-named-flow]');
+
+    // // make sure all pages ignore any changes we make during unflow since
+    // // we do NOT want to paginate because of unflowing...
+    // var pages = document.querySelectorAll('qowt-page');
+    // pages.forEach(function(page) {
+    //   page.ignoreMutations();
+    // });
+
+    // // now unflow the span
+    // flowedSpan.unflow();
+
+    // // and now re-enable the pages listening for mutations again so
+    // // that the subsequent edit that will happen WILL be picked up, and
+    // // it WILL cause a re-paginate
+    // pages.forEach(function(page) {
+    //   page.listenForMutations();
+    // });
+  },
 
   handlePageChanged_: function(details) {
     // TODO(jliebrand): could double check that page is in the dom

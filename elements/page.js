@@ -7,11 +7,26 @@
     supports_: ['something'],
 
     attached: function() {
+      // Note: the order in which observers are called is based
+      // on the order of CONSTRUCTION. Since we should always create
+      // pages "in order", this is good news. It means taht a mutation
+      // on multiple pages will gaurantee that the observers are called
+      // "in order" and thus we paginate (reflow) from top down
       this.mutationObserver_ = new MutationSummary({
         rootNode: this,
         callback: this.handleMutations_.bind(this),
         queries: [{ all: true }],
       });
+    },
+
+    // TODO(jliebrand): do we need to add a 'detach' function that
+    // removes the mutation observer? or is that garbage collected?
+
+    ignoreMutations: function() {
+      this.mutationObserver_.disconnect();
+    },
+    listenForMutations: function() {
+      this.mutationObserver_.reconnect();
     },
 
     ready: function() {
@@ -47,6 +62,7 @@
     // ---------------------- PRIVATE ------------------
 
     handleMutations_: function(mutations) {
+      console.log('handle mutations');
       // TODO(jliebrand): would like to use polymer this.fire but that
       // fires a normal dom event, which is not handled synchronously by
       // listeners which means any changes made in handling the event (for

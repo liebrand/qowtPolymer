@@ -1,10 +1,7 @@
 (function() {
   "use strict";
 
-
-  // and mixin the basic flowing functions
-  // FlowingElement.addMixin(module);
-
+  // merge in the FlowingElement mixin
   window.FlowCells = mergeMixin(FlowingElement, {
 
     supports_: ['flow-cells'],
