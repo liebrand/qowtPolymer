@@ -42,26 +42,26 @@
   html out for multiple tests.
   -->
 
+  <div id="mocha"></div>
 
-  <template id="T">
+  <div id="T">
     <qowt-doc>
       <qowt-page>
         <qowt-section>
-          <qowt-para>
+          <p is='qowt-para'>
             <span></span>
             <span></span>
             <span></span>
             <span></span>
             <span></span>
             <span></span>
-          </qowt-para>
+          </p>
         </qowt-section>
       </qowt-page>
     </qowt-doc>
-  </template>
+  </div>
 
   <div id="testDiv"></div>
-  <div id="mocha"></div>
 
   <script>
     var assert = chai.assert;
@@ -69,19 +69,49 @@
 
     mocha.setup('bdd');
 
+    function overflowFunc_(page, spansToFit) {
+      var spansOnPage = page.querySelectorAll('span');
+      var overflow = spansOnPage.length > spansToFit;
+      return overflow;
+    }
 
     // The main test loop
     function test_() {
 
-      describe("module", function() {
+      describe("flow children", function() {
+
+        var templ = document.getElementById('T');
+        var testDiv = document.getElementById('testDiv');
 
         beforeEach(function() {
+          // testDiv.appendChild(templ.content.cloneNode(true));
+          testDiv.appendChild(templ.cloneNode(true));
+          testDiv.appendChild(document.createElement('qowt-doc'));
         });
         afterEach(function() {
+          // while (testDiv.firstChild) {
+          //   testDiv.removeChild(testDiv.firstChild);
+          // }
         });
 
-        it("should do something A", function() {
-          expect(true).to.equal(false);
+        it("should flow all children recursively", function() {
+          var doc = testDiv.querySelector('qowt-doc');
+          var pages = doc.querySelectorAll('qowt-page');
+          var allSpans = doc.querySelectorAll('span');
+
+          // test by only supporting 2 spans on the first page
+          var fit2Spans = overflowFunc_.bind(null, pages[0], 2);
+          pages[0].isOverflowing = fit2Spans;
+
+          doc.paginate(pages[0]);
+
+          pages = doc.querySelectorAll('qowt-page');
+          expect(pages.length).to.equal(2);
+
+          var spansOnPage1 = pages[0].querySelectorAll('span');
+          var spansOnPage2 = pages[1].querySelectorAll('span');
+          expect(spansOnPage1.length).to.equal(2);
+          expect(spansOnPage2.length).to.equal(allSpans.length - spansOnPage1.length);
         });
 
         it("should do something B", function() {

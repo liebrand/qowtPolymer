@@ -54,7 +54,8 @@ define([
 
       // step 1 - reflow last child
       var child = this.lastElementChild;
-      if (child && child.supports('flow') && child.isFlowing()) {
+      if (child && child.supports && child.supports('flow') &&
+          child.isFlowing()) {
         if (!child.flowInto) {
           var childFlowInto = child.createFlowInto();
 
@@ -177,7 +178,7 @@ define([
     // if so, pull it back in to 'this' and flow it
     recurse_: function(overflowingFunc) {
       var child = this.flowInto.firstElementChild;
-      if (child && child.supports('flow')) {
+      if (child && child.supports && child.supports('flow')) {
 
         // pull it back
         DomUtils.insertAtEnd(this, child);

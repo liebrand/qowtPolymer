@@ -24,6 +24,7 @@ require([
       this.setAttribute('contenteditable', 'true');
     },
     attached: function() {
+      console.log('doc attached');
       PubSub.subscribe('page-changed', this.handlePageChanged_.bind(this));
       document.addEventListener('keydown', this.handleKeyDown_.bind(this));
     },
@@ -82,16 +83,18 @@ require([
       //   }
       // }
 
+      // var i;
       // // make sure all pages ignore any changes we make during unflow since
       // // we do NOT want to paginate because of unflowing...
       // var pages = document.querySelectorAll('qowt-page');
-      // for (var i = 0; i < pages.length; i++) {
+      // for (i = 0; i < pages.length; i++) {
       //   pages[i].ignoreMutations();
       // }
 
       // // unflow all relevant top level elements
       // topLevelElements.forEach(function(element) {
-      //   if (element.supports('flow') && element.isFlowing()) {
+      //   if (element.supports && element.supports('flow') &&
+            // element.isFlowing()) {
       //     element.unflow();
       //   }
       // });
@@ -99,7 +102,7 @@ require([
       // // and now re-enable the pages listening for mutations again so
       // // that the subsequent edit that will happen WILL be picked up, and
       // // it WILL cause a re-paginate
-      // for (var i = 0; i < pages.length; i++) {
+      // for (i = 0; i < pages.length; i++) {
       //   pages[i].listenForMutations();
       // }
     },
