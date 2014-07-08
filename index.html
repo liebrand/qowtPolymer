@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="utils/lodash.min.js"></script>
-    <script src="utils/domUtils.js"></script>
-    <script src="utils/miscUtils.js"></script>
-    <script src="utils/arrayUtils.js"></script>
-    <script src="utils/rangeUtils.js"></script>
-    <script src="utils/mutation-summary.js"></script>
-    <script src="utils/pubsub.js"></script>
-    <script src="editor/mockEditor.js"></script>
+    <script src="../bower_components/platform/platform.js" type="text/javascript"></script>
+
+    <script src="../utils/require.min.js" type="text/javascript"></script>
+    <script>
+      require.config({
+        baseUrl: "../"
+      });
+    </script>
+
+    <!-- Finally load our Polymer element -->
+    <link rel="import" href="../elements/qowt.html">
+
+
+    <!-- // <script src="editor/mockEditor.js"></script> -->
     <script src="mockDCP.js"></script>
 
-    <script src="bower_components/platform/platform.js"></script>
-    <link rel="import" href="elements/qowt.html">
   </head>
   <body onload="init()"></body>
 </html>

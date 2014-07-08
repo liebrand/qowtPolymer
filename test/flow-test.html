@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+  <title>qowt-page test</title>
+
+  <!-- The order of loading is important here.
+  The test frameworks must be loaded before requirejs.-->
+  <script src="../bower_components/platform/platform.js" type="text/javascript"></script>
+
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  <script src="../node_modules/mocha/mocha.js" type="text/javascript"></script>
+  <script src="../node_modules/chai/chai.js" type="text/javascript"></script>
+  <script src="../utils/lodash.min.js" type="text/javascript"></script>
+
+  <!-- Set up our test environment -->
+  <script src="./htmlTest.js"></script>
+
+  <script src="../utils/require.min.js" type="text/javascript"></script>
+  <script>
+    require.config({
+      baseUrl: "../"
+    });
+  </script>
+
+  <!-- Finally load our Polymer element -->
+  <link rel="import" href="../elements/doc.html">
+  <link rel="import" href="../elements/section.html">
+  <link rel="import" href="../elements/page.html">
+  <link rel="import" href="../elements/para.html">
+
+</head>
+
+<body>
+
+  <!--
+  We are testing the recursive balancing of child elements.
+  So we create a test configuration of elements which flow
+  their children. Note how we thus do not use <qowt-run> elements
+  since they flow words, not children.
+
+  And we use a template here so we can stamp this test
+  html out for multiple tests.
+  -->
+
+
+  <template id="T">
+    <qowt-doc>
+      <qowt-page>
+        <qowt-section>
+          <qowt-para>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </qowt-para>
+        </qowt-section>
+      </qowt-page>
+    </qowt-doc>
+  </template>
+
+  <div id="testDiv"></div>
+  <div id="mocha"></div>
+
+  <script>
+    var assert = chai.assert;
+    var expect = chai.expect;
+
+    mocha.setup('bdd');
+
+
+    // The main test loop
+    function test_() {
+
+      describe("module", function() {
+
+        beforeEach(function() {
+        });
+        afterEach(function() {
+        });
+
+        it("should do something A", function() {
+          expect(true).to.equal(false);
+        });
+
+        it("should do something B", function() {
+          expect(true).to.equal(false);
+        });
+
+      });
+
+      // running as part of karma
+      if (window.top !== window) {
+
+        mocha.setup({
+          reporter: function(runner) {
+            runner.on('fail', function(a,b,c) {
+              console.log('fail');
+              setTimeout(function() {
+                throw b;
+              },0);
+            });
+            runner.on('end', function(x) {
+              console.log('end');
+              done();
+            });
+          }
+        });
+      }
+
+      mocha.run();
+    }
+
+
+    whenReady().then(test_)
+      // .then(done)
+      .catch(function(e) {
+        setTimeout(function() {
+          throw e;
+        },0);
+      });
+
+  </script>
+</body>
+</html>

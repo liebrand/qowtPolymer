@@ -1,7 +1,10 @@
-(function() {
+define([
+  'utils/miscUtils',
+  ], function(MiscUtils) {
+
   "use strict";
 
-  window.FlowingElement = {
+  return {
 
     supports_: ['flow'],
 
@@ -12,7 +15,7 @@
       return this.getAttribute('data-named-flow');
     },
     createNamedFlow: function() {
-      var flow = 'FLOW-' + window.generateId();
+      var flow = 'FLOW-' + MiscUtils.generateId();
       this.setNamedFlow(flow);
       return flow;
     },
@@ -82,7 +85,7 @@
           current = next;
           loopCount++;
         }
-        assert(loopCount === chain.length, 'chain broken!');
+        MiscUtils.assert(loopCount === chain.length, 'chain broken!');
 
         // now if we are left with only one node, then clear its flow
         chain = doc.querySelectorAll(flowSelector);
@@ -101,4 +104,4 @@
 
   };
 
-})();
+});

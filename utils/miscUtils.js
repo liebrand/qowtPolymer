@@ -1,42 +1,50 @@
 
+define(['utils/lodash.min'], function(LowDash) {
 
-// usage:
-// var proto = mergeMixin(BaseBehaviour, OtherBehaviour, api_);
-window.mergeMixin = function() {
-  var mainArguments = Array.prototype.slice.call(arguments);
+  'use strict';
 
-  // start with an empty object (so that we dont physically change any mixin)
-  mainArguments.unshift({});
+  var id_ = 0;
 
-  // add a merge function that can merge arrays like the "supports_" array
-  mainArguments.push(function(a, b) {
-    return _.isArray(a) ? a.concat(b) : undefined;
-  });
+  return {
+    // usage:
+    // var proto = mergeMixin(BaseBehaviour, OtherBehaviour, api_);
+    mergeMixin: function() {
+      var mainArguments = Array.prototype.slice.call(arguments);
 
-  // use lodash to merge the mixins and apis etc
-  return _.merge.apply(null, mainArguments);
-}
+      // start with an empty object
+      // (so that we dont physically change any mixin)
+      mainArguments.unshift({});
 
+      // add a merge function that can merge arrays like the "supports_" array
+      mainArguments.push(function(a, b) {
+        return _.isArray(a) ? a.concat(b) : undefined;
+      });
 
-window.assert = function(expression, msg) {
-  var result;
-  if (typeof expression === 'function') {
-    result = expression();
-  } else {
-    result = expression;
-  }
-  if (!result) {
-    /* jshint debug: true */
-    debugger;
-    /* jshint debug: false */
-    throw new Error('ASSERT FAILED: ' + msg);
-  }
-};
+      // use lodash to merge the mixins and apis etc
+      return _.merge.apply(null, mainArguments);
+    },
 
 
-(function() {
-  var id = 0;
-  window.generateId = function() {
-    return id++;
+    assert: function(expression, msg) {
+      var result;
+      if (typeof expression === 'function') {
+        result = expression();
+      } else {
+        result = expression;
+      }
+      if (!result) {
+        /* jshint debug: true */
+        debugger;
+        /* jshint debug: false */
+        throw new Error('ASSERT FAILED: ' + msg);
+      }
+    },
+
+    generateId: function() {
+      return id_++;
+    }
+
   };
-}());
+
+});
+

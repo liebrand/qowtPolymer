@@ -1,8 +1,13 @@
-(function() {
+define([
+  'elements/mixin/flowingElement',
+  'utils/rangeUtils',
+  'utils/miscUtils'
+  ], function(FlowingElement, RangeUtils, MiscUtils) {
+
   "use strict";
 
   // merge in the FlowingElement mixin
-  window.FlowWords = mergeMixin(FlowingElement, {
+  return MiscUtils.mergeMixin(FlowingElement, {
 
     supports_: ['flow-words'],
     /**
@@ -176,4 +181,4 @@
 
   });
 
-})();
+});

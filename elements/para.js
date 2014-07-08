@@ -1,11 +1,19 @@
 
-(function() {
+window.__customElementRegistry = window.__customElementRegistry || [];
+window.__customElementRegistry.push('QowtPara');
 
-  "use strict";
+require([
+  'utils/miscUtils',
+  'elements/mixin/element',
+  'elements/mixin/flowChildren'], function(
+    MiscUtils,
+    QowtElement,
+    FlowChildren) {
+
+  'use strict';
 
   var api_ = {
     supports_: ['something'],
-
     jelte: function() {
       FlowChildren.jelte.call(this);
       console.log('jelte page: ' + this.nodeName);
@@ -13,11 +21,8 @@
   };
 
 
-  var QowtParaProto = mergeMixin(QowtElement, FlowChildren, api_);
-
-
   /* jshint newcap: false */
-  Polymer('qowt-para', QowtParaProto);
+  Polymer('qowt-para', MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
-})();
+});

@@ -1,5 +1,18 @@
 
-(function() {
+window.__customElementRegistry = window.__customElementRegistry || [];
+window.__customElementRegistry.push('QowtPage');
+
+require([
+  'utils/pubsub',
+  'utils/mutation-summary',
+  'utils/miscUtils',
+  'elements/mixin/element',
+  'elements/mixin/flowChildren'], function(
+    PubSub,
+    MutationSummaryDep,
+    MiscUtils,
+    QowtElement,
+    FlowChildren) {
 
   "use strict";
 
@@ -62,7 +75,7 @@
     // ---------------------- PRIVATE ------------------
 
     handleMutations_: function(mutations) {
-      console.log('handle mutations');
+      // console.log('handle mutations');
       // TODO(jliebrand): would like to use polymer this.fire but that
       // fires a normal dom event, which is not handled synchronously by
       // listeners which means any changes made in handling the event (for
@@ -74,11 +87,10 @@
   };
 
 
-  var QowtPageProto = mergeMixin(QowtElement, FlowChildren, api_);
-
+  var QowtPageProto = MiscUtils.mergeMixin(QowtElement, FlowChildren, api_);
 
   /* jshint newcap: false */
   Polymer('qowt-page', QowtPageProto);
   /* jshint newcap: true */
 
-})();
+});

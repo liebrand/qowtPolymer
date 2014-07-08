@@ -1,11 +1,18 @@
+window.__customElementRegistry = window.__customElementRegistry || [];
+window.__customElementRegistry.push('QowtTableCell');
 
-(function() {
+require([
+  'utils/miscUtils',
+  'elements/mixin/element',
+  'elements/mixin/flowChildren'], function(
+    MiscUtils,
+    QowtElement,
+    FlowChildren) {
 
-  "use strict";
+  'use strict';
 
   var api_ = {
     supports_: ['something'],
-
     normalizeFlow: function() {
       // table cells THEMSELVEs should never normalize
       // (that could cause us to have fewer cells in
@@ -21,14 +28,12 @@
     contentHeight: function() {
       return this.$.contents.offsetHeight;
     }
-
   };
 
 
-  var QowtTableCellProto = mergeMixin(QowtElement, FlowChildren, api_);
-
   /* jshint newcap: false */
-  Polymer('qowt-table-cell', QowtTableCellProto);
+  Polymer('qowt-table-cell',
+      MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
-})();
+});

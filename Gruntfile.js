@@ -8,6 +8,8 @@ module.exports = function(grunt) {
 
       '**/*.js',
       '!**/mutation-summary.js',
+      '!**/lodash.min.js',
+      '!**/require.min.js',
       '!bower_components/**/*',
       '!node_modules/**/*'
     ],

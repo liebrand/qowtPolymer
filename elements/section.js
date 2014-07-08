@@ -1,7 +1,16 @@
 
-(function() {
+window.__customElementRegistry = window.__customElementRegistry || [];
+window.__customElementRegistry.push('QowtSection');
 
-  "use strict";
+require([
+  'utils/miscUtils',
+  'elements/mixin/element',
+  'elements/mixin/flowChildren'], function(
+    MiscUtils,
+    QowtElement,
+    FlowChildren) {
+
+  'use strict';
 
   var api_ = {
     supports_: ['something'],
@@ -23,7 +32,8 @@
       hft.setAttribute('data-hf-page-type', pageType);
 
       this.$.headerFooterTemplates.appendChild(hft);
-      hft.dispatchEvent(new CustomEvent('header-footer-change', {bubbles: true}));
+      var evt = new CustomEvent('header-footer-change', {bubbles: true});
+      hft.dispatchEvent(evt);
     },
 
     getHFContent: function(hf, pageType) {
@@ -51,10 +61,11 @@
   };
 
 
-  var QowtSectionProto = mergeMixin(QowtElement, FlowChildren, api_);
-
   /* jshint newcap: false */
-  Polymer('qowt-section', QowtSectionProto);
+  Polymer('qowt-section',
+      MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
-})();
+});
+
+

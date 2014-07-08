@@ -1,7 +1,8 @@
-(function() {
+define([], function() {
+
   "use strict";
 
-  window.QowtElement = {
+  return {
 
     supports_: [],
 
@@ -13,4 +14,4 @@
       return (this.childNodes.length === 0);
     }
   };
-})();
+});

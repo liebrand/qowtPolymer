@@ -1,8 +1,12 @@
-(function() {
+define([
+  'elements/mixin/flowingElement',
+  'utils/domUtils',
+  'utils/miscUtils'], function(FlowingElement, DomUtils, MiscUtils) {
+
   "use strict";
 
   // merge in the FlowingElement mixin
-  window.FlowCells = mergeMixin(FlowingElement, {
+  return MiscUtils.mergeMixin(FlowingElement, {
 
     supports_: ['flow-cells'],
 
@@ -65,8 +69,8 @@
 
     constructFlowIntos_: function() {
       var nonFlowingCellsSelector = ':scope > :not([data-named-flow])';
-      var nonFlowingCells = this.querySelectorAll(nonFlowingCellsSelector)
-      assert(
+      var nonFlowingCells = this.querySelectorAll(nonFlowingCellsSelector);
+      MiscUtils.assert(
         nonFlowingCells.length === 0 ||
         nonFlowingCells.length === this.childElementCount,
         'Either all cells should be flowing or none should be');
@@ -108,4 +112,4 @@
 
   });
 
-})();
+});

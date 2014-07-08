@@ -1,19 +1,24 @@
+window.__customElementRegistry = window.__customElementRegistry || [];
+window.__customElementRegistry.push('QowtRun');
 
-(function() {
+require([
+  'utils/miscUtils',
+  'elements/mixin/element',
+  'elements/mixin/flowWords'], function(
+    MiscUtils,
+    QowtElement,
+    FlowWords) {
 
-  "use strict";
+  'use strict';
 
   var api_ = {
     supports_: ['something'],
-
-    foo: function(){}
+    foo: function() {}
   };
 
 
-  var QowtRunProto = mergeMixin(QowtElement, FlowWords, api_);
-
   /* jshint newcap: false */
-  Polymer('qowt-run', QowtRunProto);
+  Polymer('qowt-run', MiscUtils.mergeMixin(QowtElement, FlowWords, api_));
   /* jshint newcap: true */
 
-})();
+});

@@ -70,16 +70,16 @@
       "gapi": true,
 
       "Polymer": true,
-      "DomUtils": true,
-      "FlowChildren": true,
-      "FlowingElement": true,
-      "FlowWords": true,
-      "PubSub": true,
+      "htmlTest": true,
+      "htmlSuite": true,
 
       "QowtElement": true,
       "QowtPage": true,
       "QowtPara": true,
       "QowtSection": true,
-      "QowtRun": true
+      "QowtRun": true,
+      "QowtTable": true,
+      "QowtTableRow": true,
+      "QowtTableCell": true
    }
 }

@@ -1,13 +1,17 @@
+define([], function() {
 
-window.DomUtils = {
-  insertAtStart: function(into, element) {
-    if (into) {
-      return into.insertBefore(element, into.firstChild);
+  'use strict';
+
+  return {
+    insertAtStart: function(into, element) {
+      if (into) {
+        return into.insertBefore(element, into.firstChild);
+      }
+    },
+    insertAtEnd: function(into, element) {
+      if (into) {
+        into.appendChild(element);
+      }
     }
-  },
-  insertAtEnd: function(into, element) {
-    if (into) {
-      into.appendChild(element);
-    }
-  },
-};
+  };
+});

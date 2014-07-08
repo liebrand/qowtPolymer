@@ -1,8 +1,16 @@
-(function() {
+define([
+  'utils/miscUtils',
+  'utils/domUtils',
+  'elements/mixin/flowingElement'
+  ], function(
+    MiscUtils,
+    DomUtils,
+    FlowingElement) {
+
   "use strict";
 
   // merge in the FlowingElement mixin
-  window.FlowChildren = mergeMixin(FlowingElement, {
+  return MiscUtils.mergeMixin(FlowingElement, {
 
     supports_: ['flow-children'],
 
@@ -70,7 +78,7 @@
           // we are still overflowing, so the content of child SHOULD have
           // moved completely in to this.flowInto and the child should thus
           // no longer be in the DOM.
-          assert(!child.ownerDocument.body.contains(child),
+          MiscUtils.assert(!child.ownerDocument.body.contains(child),
             new Error('child should have flowed completely to flowInto'));
         } else {
           if (child.isFlowing()) {
@@ -201,4 +209,4 @@
 
   });
 
-})();
+});

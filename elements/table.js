@@ -1,19 +1,25 @@
 
-(function() {
+window.__customElementRegistry = window.__customElementRegistry || [];
+window.__customElementRegistry.push('QowtTable');
 
-  "use strict";
+require([
+  'utils/miscUtils',
+  'elements/mixin/element',
+  'elements/mixin/flowChildren'], function(
+    MiscUtils,
+    QowtElement,
+    FlowChildren) {
+
+  'use strict';
 
   var api_ = {
     supports_: ['something'],
-
-    foo: function(){}
+    foo: function() {}
   };
 
 
-  var QowtTableProto = mergeMixin(QowtElement, FlowChildren, api_);
-
   /* jshint newcap: false */
-  Polymer('qowt-table', QowtTableProto);
+  Polymer('qowt-table', MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
-})();
+});

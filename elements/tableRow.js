@@ -1,11 +1,18 @@
+window.__customElementRegistry = window.__customElementRegistry || [];
+window.__customElementRegistry.push('QowtTableRow');
 
-(function() {
+require([
+  'utils/miscUtils',
+  'elements/mixin/element',
+  'elements/mixin/flowCells'], function(
+    MiscUtils,
+    QowtElement,
+    FlowCells) {
 
-  "use strict";
+  'use strict';
 
   var api_ = {
     supports_: ['something'],
-
     isEmpty: function() {
       // if all our cells our empty, then we are empty
       // (and can be removed during a normalize phase)
@@ -33,7 +40,6 @@
           if (current.isEmpty()) {
             for (var i = 0; i < current.children.length; i++) {
               var cell = current.children[i];
-              debugger;
               cell.forceNormalizeFlow();
             }
             current.removeFromFlow();
@@ -41,7 +47,7 @@
           current = next;
           loopCount++;
         }
-        assert(loopCount === chain.length, 'chain broken!');
+        MiscUtils.assert(loopCount === chain.length, 'chain broken!');
 
         // now if we are left with only one node, then clear its flow
         chain = doc.querySelectorAll(flowSelector);
@@ -54,11 +60,8 @@
   };
 
 
-  var QowtTableRowProto = mergeMixin(QowtElement, FlowCells, api_);
-
   /* jshint newcap: false */
-  Polymer('qowt-table-row', QowtTableRowProto);
+  Polymer('qowt-table-row', MiscUtils.mergeMixin(QowtElement, FlowCells, api_));
   /* jshint newcap: true */
 
-})();
-
+});

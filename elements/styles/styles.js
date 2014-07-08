@@ -48,9 +48,8 @@ Polymer('qowt-styles', {
     var cssString = '';
     for(var styleName in this.styles_) {
 
-      cssString += '.' + styleName + ' {'
+      cssString += '.' + styleName + ' {';
 
-      debugger;
       var rules = this.getRules_(styleName);
 
       for(var key in rules) {
