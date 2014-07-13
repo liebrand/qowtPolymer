@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <title>qowt-page test</title>
+
+  <!-- bootstrap -->
+  <link rel="import" href="./testBootstrap.html">
+
+  <!-- load the Polymer elements we want to test -->
+  <link rel="import" href="../elements/doc.html">
+  <link rel="import" href="../elements/section.html">
+  <link rel="import" href="../elements/page.html">
+  <link rel="import" href="../elements/para.html">
+
+</head>
+
+<body>
+
+  <!-- used to show mocha results when running this test standalone -->
+  <div id="mocha"></div>
+
+  <!--
+  We are testing the recursive balancing of child elements.
+  So we create a test configuration of elements which flow
+  their children. Note how we thus do not use <qowt-run> elements
+  since they flow words, not children.
+
+  And we use a template here so we can stamp this test
+  html out for multiple tests.
+  -->
+  <template id="T">
+    <qowt-doc>
+      <qowt-page>
+        <qowt-section>
+          <p is='qowt-para'>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </p>
+        </qowt-section>
+      </qowt-page>
+    </qowt-doc>
+  </template>
+
+  <div id="testDiv"></div>
+
+  <script src="./flowChildren-test.js" type="text/javascript"></script>
+
+</body>
+</html>

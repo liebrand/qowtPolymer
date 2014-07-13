@@ -26,6 +26,7 @@
    "maxcomplexity": false,
    "regexp": false,
    "undef": true,
+   "unused": true,
    "loopfunc": true,
 
    "globals": {

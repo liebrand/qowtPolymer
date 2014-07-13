@@ -32,9 +32,10 @@ define([
      *       flowing then we are done overflowing
      *   1c- if last child flowed completed to this.flowInto then go to step 2
      *
-     *   2 - if overflowingFunc is true, then
-     *   2a- flow children from flowInto to this, else
-     *   2b- flow children from this to flowInto
+     *   2 - while we have flowInto
+     *   2a- flow children to/from flowInto
+     *   2b- if flowInto is now empty, remove it from flow
+     *   2c- repeat 2
      *
      *      (now we should no longer be overflowing)
      *
@@ -86,13 +87,25 @@ define([
             // we're no longer overflowing, and child is still flowing
             // so it has done it's job - there's nothing more to overflow
             // or indeed to flow back in to 'this'
+            this.normalizeFlow();
             return true;
           }
         }
       }
 
-      // step 2 - last child not flowing: flow rest of children
-      this.flowChildren_(overflowingFunc);
+      // step 2 - while we have a flowInto, flow
+      do {
+        var goAgain = false;
+        this.flowChildren_(overflowingFunc);
+        if (this.flowInto.isEmpty()) {
+          this.flowInto.removeFromFlow();
+          if (this.flowInto) {
+            // we have a new flow into; see if we have to
+            // flow more content from that guy
+            goAgain = true;
+          }
+        }
+      } while (goAgain);
 
       // step 3 - recurse in to 'edge child' (if it supports it)
       this.recurse_(overflowingFunc);
@@ -177,7 +190,7 @@ define([
     // check if the first child in 'flowInto' supports flow,
     // if so, pull it back in to 'this' and flow it
     recurse_: function(overflowingFunc) {
-      var child = this.flowInto.firstElementChild;
+      var child = this.flowInto && this.flowInto.firstElementChild;
       if (child && child.supports && child.supports('flow')) {
 
         // pull it back
