@@ -41,9 +41,12 @@ The test frameworks must be loaded before requirejs.-->
   // a template with 'T', then clone that in to our testDiv
   // before each test
   var templ = document.getElementById('T');
-  window.testDiv = document.getElementById('testDiv') ||
-                document.createElement('div');
-  testDiv.id = 'testDiv';
+  var testDiv = document.getElementById('testDiv');
+  if (!testDiv) {
+    testDiv = document.createElement('div');
+    testDiv.id = 'testDiv';
+    document.body.appendChild(testDiv);
+  }
 
   beforeEach(function() {
     if (templ) {
