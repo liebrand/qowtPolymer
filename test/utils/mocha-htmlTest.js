@@ -91,7 +91,6 @@
       error = new window[err.name]();
     } else {
       // default to normal built in error
-      console.log('cast fallback to Error');
       error = new Error();
     }
 

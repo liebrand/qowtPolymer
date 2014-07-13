@@ -53,7 +53,7 @@ define([
           ' tried to flow without having a flowInto');
       }
 
-      // step 1 - reflow last child
+      // step 1 - reflow last child if required
       var child = this.lastElementChild;
       if (child && child.supports && child.supports('flow') &&
           child.isFlowing()) {
@@ -110,7 +110,7 @@ define([
       // step 3 - recurse in to 'edge child' (if it supports it)
       this.recurse_(overflowingFunc);
 
-      // step 4 - normalize in case we moved all content into this or flowInto
+      // step 4 - normalize in case we moved all content into or out of this
       this.normalizeFlow();
     },
 
@@ -123,21 +123,19 @@ define([
      *    3- normalize in case we moved all children
      */
     unflow: function() {
-      throw new Error('TODO: should unflow entire CHAIN!');
+      if (!this.flowInto) {
+        throw new Error(this.nodeName +
+                        ' tried to unflow without having a flowInto');
+      }
 
-      // if (!this.flowInto) {
-      //   throw new Error(this.nodeName +
-      //                   ' tried to unflow without having a flowInto');
-      // }
+      // step 1 - recurse unflow child
+      this.recurseUnflowChild_();
 
-      // // step 1 - recurse unflow child
-      // this.recurseUnflowChild_();
+      // step 2 - unflow all children back in to 'this'
+      this.unflowChildren_();
 
-      // // step 2 - unflow all children back in to 'this'
-      // this.unflowChildren_();
-
-      // // step 3 - normalize flow
-      // this.normalizeFlow();
+      // step 3 - normalize flow
+      this.normalizeFlow();
     },
 
 

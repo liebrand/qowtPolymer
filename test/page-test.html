@@ -3,60 +3,25 @@
 <head>
   <title>qowt-page test</title>
 
-  <!-- The order of loading is important here.
-  The test frameworks must be loaded before requirejs.-->
-  <script src="../bower_components/platform/platform.js" type="text/javascript"></script>
-  <script src="../node_modules/chai/chai.js" type="text/javascript"></script>
-  <script src="../utils/lodash.min.js" type="text/javascript"></script>
+  <!-- bootstrap -->
+  <link rel="import" href="./utils/testBootstrap.html">
 
-  <!-- Set up our test environment -->
-  <script src="./htmlTest.js"></script>
-
-  <script src="../utils/require.min.js" type="text/javascript"></script>
-  <script>
-    require.config({
-      baseUrl: "../"
-    });
-  </script>
-
-  <!-- Finally load our Polymer element -->
+  <!-- load the Polymer elements we want to test -->
   <link rel="import" href="../elements/page.html">
 
 </head>
 
 <body>
-  <!-- Create an instance of my element on which I can assert -->
-  <qowt-page></qowt-page>
+  <!-- Create an instance of qowt-page
+  And we use a template here so we can stamp this test
+  html out for multiple tests.
+  -->
+  <template id="T">
+    <qowt-page></qowt-page>
+  </template>
 
-  <script>
-    var assert = chai.assert;
+  <div id="testDiv"></div>
 
-    // The main test loop
-    function test_() {
-      var page = document.querySelector('qowt-page');
-      assert(page instanceof QowtPage, 'element is a QowtPage');
-
-      assertFunctions(page, ['flow', 'unflow', 'isFlowing']);
-
-      // Tell Karma we are done with all our tests so it can report.
-      done();
-    }
-
-    function assertFunctions(element, funcList) {
-      funcList.forEach(function(funcName) {
-        assert.isFunction(element[funcName],
-            '<qowt-page>.' + funcName);
-      });
-    }
-
-    whenReady().then(
-      test_
-    ).catch(function(e) {
-      setTimeout(function() {
-        throw e;
-      },0);
-    });
-
-  </script>
+  <script src="page-test.js" type="text/javascript"></script>
 </body>
 </html>

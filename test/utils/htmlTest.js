@@ -52,6 +52,7 @@ window.done = function() {
  */
 window.addEventListener('error', function(e) {
   var err;
+  // console.dir(e);
   // debugger;
   if (e.error instanceof Error) {
     err = _.extend({}, e.error);

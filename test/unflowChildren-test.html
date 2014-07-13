@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>recursive element flow test</title>
+  <title>unflow element test</title>
 
   <!-- bootstrap -->
   <link rel="import" href="./utils/testBootstrap.html">
@@ -17,7 +17,7 @@
 <body>
 
   <!--
-  We are testing the recursive flowing of child elements.
+  We are testing the recursive unflowing of child elements.
   So we create a test configuration of elements which flow
   their children. Note how we thus do not use <qowt-run> elements
   since they flow words, not children.
@@ -34,10 +34,20 @@
             <span></span>
             <span></span>
             <span></span>
+          </p>
+          <p is='qowt-para'>
             <span></span>
             <span></span>
             <span></span>
             <span></span>
+          </p>
+          <p is='qowt-para'>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </p>
+          <p is='qowt-para'>
             <span></span>
             <span></span>
             <span></span>
@@ -50,7 +60,7 @@
 
   <div id="testDiv"></div>
 
-  <script src="./flowChildren-test.js" type="text/javascript"></script>
+  <script src="./unflowChildren-test.js" type="text/javascript"></script>
 
 </body>
 </html>

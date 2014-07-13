@@ -1,5 +1,5 @@
 
-describe("flow children", function() {
+describe("unflow children", function() {
 
   var doc;
 
@@ -7,44 +7,27 @@ describe("flow children", function() {
     doc = testDiv.querySelector('qowt-doc');
   });
 
-  it("should flow all children recursively", function() {
+
+  it("should be possible to unflow a top " +
+     "level element and all its children", function() {
     var spanCount = doc.querySelectorAll('span').length;
 
-    testPaginate_(0, 2);
+    testPaginate_(0, 11);
+
+    var lastElement = getLastElementForPage_(0);
+    expect(lastElement.isFlowing()).to.equal(true);
 
     expectPageCount_(2);
-    expectSpansOnPage_(0, 2);
-    expectSpansOnPage_(1, spanCount - 2);
-  });
+    expectSpansOnPage_(0, 11);
+    expectSpansOnPage_(1, spanCount - 11);
 
+    lastElement.unflow();
 
-  it("should support flowing on to three pages", function() {
-    var spanCount = doc.querySelectorAll('span').length;
-
-    testPaginate_(0, 2);
-    testPaginate_(1, 3);
-
-    expectPageCount_(3);
-    expectSpansOnPage_(0, 2);
-    expectSpansOnPage_(1, 3);
-    expectSpansOnPage_(2, spanCount - 5);
-  });
-
-  it("should reflow by absorbing content across ALL pages", function() {
-    var spanCount = doc.querySelectorAll('span').length;
-
-    testPaginate_(0, 2);
-    testPaginate_(1, 3);
-
-    // now reflow page 1, and ensure we fit enough
-    // spans for us to have to pull them from page 2 AND 3
-    testPaginate_(0, 10);
-
+    expect(lastElement.isFlowing()).to.equal(false);
     expectPageCount_(2);
-    expectSpansOnPage_(0, 10);
-    expectSpansOnPage_(1, spanCount - 10);
+    expectSpansOnPage_(0, 12);
+    expectSpansOnPage_(1, spanCount - 12);
   });
-
 
 
 
@@ -65,6 +48,14 @@ describe("flow children", function() {
     doc.paginate(page);
 
     page.isOverflowing.restore();
+  }
+
+  function getLastElementForPage_(pageNum) {
+    var pages = doc.querySelectorAll('qowt-page');
+    var page = pages[pageNum];
+    var section = page.firstElementChild;
+    var lastTopLevelElement = section.lastElementChild;
+    return lastTopLevelElement;
   }
 
   function expectPageCount_(count) {
