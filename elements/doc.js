@@ -111,6 +111,21 @@ require([
       // TODO(jliebrand): could double check that page is in the dom
       // although it always should be...
       this.paginate(details.page);
+      // this.zoom_(1);
+    },
+
+    zoom_: function(scale) {
+      // debugger;
+      var range = document.createRange();
+      range.selectNodeContents(this);
+      var innerSize = range.getBoundingClientRect();
+
+      this.style.height = (innerSize.height * scale) + 'px';
+      this.style.width = (innerSize.width * scale) + 'px';
+      document.body.scrollTop = '-' + (innerSize.height / scale) + 'px';
+      document.body.scrollLeft = '-' + (innerSize.width / scale) + 'px';
+
+      this.style['-webkit-transform'] = 'scale(' + scale + ')';
     }
 
   };

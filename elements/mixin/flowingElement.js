@@ -70,16 +70,11 @@ define([
         while (current) {
           var next = current.flowInto;
           if (current.isEmpty()) {
-            // TODO(jliebrand): this will work for pages, sections, paragraphs
-            // and runs. Because if a node in the middle of a chain is empty,
-            // then that entire page should be empty. So it's safe to remove
-            // it and the chain will relink to the next page.
-            // HOWEVER, tables break this. One could have a span node inside
-            // a table. Lets assume that the span in the chain on page 2
-            // is empty, but the span on page 1 and 3 is not. We would end
-            // up deleting span on page 2, but NOT the rest of page 2 because
-            // there can be other content in other cells. So now the chain
-            // for that span is incorrect... Need to think about this more...
+            // note: individual elements can override removeFromFlow...
+            // for example table cells shouldn't be removed from the flow,
+            // unless the entire row is empty. Thus table cells override
+            // this function to do nothing, and table rows can call the
+            // table cell's forceRemoveFromFlow...
             current.removeFromFlow();
           }
           current = next;

@@ -40,7 +40,7 @@ require([
           if (current.isEmpty()) {
             for (var i = 0; i < current.children.length; i++) {
               var cell = current.children[i];
-              cell.forceNormalizeFlow();
+              cell.forceRemoveFromFlow();
             }
             current.removeFromFlow();
           }

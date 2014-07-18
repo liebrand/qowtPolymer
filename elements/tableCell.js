@@ -13,16 +13,20 @@ require([
 
   var api_ = {
     supports_: ['something'],
-    normalizeFlow: function() {
-      // table cells THEMSELVEs should never normalize
-      // (that could cause us to have fewer cells in
-      // row than we should have). Instead the entire
-      // row will normalize when it's empty
+
+    removeFromFlow: function() {
+      // table cells THEMSELVEs should never just be
+      // removed from a flow since that could cause
+      // us to have fewer cells in one row than another.
+      // So we dont do anything for this function, BUT
+      // we provide a forceRemoveFromFlow that the
+      // table row can call (since it knows when the entire
+      // row is empty and thus we can be removed safely)
       return;
     },
 
-    forceNormalizeFlow: function() {
-      return FlowChildren.normalizeFlow();
+    forceRemoveFromFlow: function() {
+      return FlowChildren.removeFromFlow();
     },
 
     contentHeight: function() {

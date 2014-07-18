@@ -98,10 +98,13 @@ define([
         var goAgain = false;
         this.flowChildren_(overflowingFunc);
         if (this.flowInto.isEmpty()) {
-          this.flowInto.removeFromFlow();
-          if (this.flowInto) {
-            // we have a new flow into; see if we have to
-            // flow more content from that guy
+          // we pulled in all content from our flowInto; so
+          // remove it and double check we dont then have a
+          // NEW flowInto (from page n+2) to pull more data
+          // from (if possible)
+          var emptyNode = this.flowInto;
+          emptyNode.removeFromFlow();
+          if (this.flowInto && this.flowInto !== emptyNode) {
             goAgain = true;
           }
         }

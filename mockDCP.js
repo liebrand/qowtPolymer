@@ -1,7 +1,7 @@
 
 window.init = function() {
   // fake the content creation coming in later than domReady
-  window.setTimeout(doGenerateContent, 1000);
+  window.setTimeout(doGenerateContent, 100);
 };
 
 function doGenerateContent() {

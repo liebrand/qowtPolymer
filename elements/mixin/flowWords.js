@@ -16,9 +16,10 @@ define([
      * How many fit is decided by the passed in 'overflowingFunc'
      *
      * Steps:
-     *   1 - if overflowingFunc is true, then
-     *   1a- flow words from flowInto to this, else
-     *   1b- flow words from this to flowInto
+     *   1 - while we have flowInto
+     *   1a- flow words to/from flowInto
+     *   1b- if flowInto is now empty, remove it from flow
+     *   1c- repeat 1
      *
      *      (now we should no longer be overflowing)
      *
@@ -40,8 +41,23 @@ define([
       // in case the caret is inside of us, cache it;
       this.cacheSelection_();
 
-      // step 1 - flow the words
-      this.flowWords_(overflowingFunc);
+      // step 1 - while we have a flowInto, flow
+      do {
+        var goAgain = false;
+        this.flowWords_(overflowingFunc);
+        if (this.flowInto.isEmpty()) {
+          // we pulled in all content from our flowInto; so
+          // remove it and double check we dont then have a
+          // NEW flowInto (from page n+2) to pull more data
+          // from (if possible)
+          var emptyNode = this.flowInto;
+          emptyNode.removeFromFlow();
+          if (this.flowInto && this.flowInto !== emptyNode) {
+            goAgain = true;
+          }
+        }
+      } while (goAgain);
+
 
       // step 2 - normalize in case we moved all content into this or flowInto
       this.normalizeFlow();
