@@ -5,7 +5,7 @@ window.init = function() {
 };
 
 function doGenerateContent() {
-  var body = document.body;
+  var container = document.getElementById('container');
 
   function create(type) {
     return document.createElement(type);
@@ -65,7 +65,7 @@ function doGenerateContent() {
     return frag;
   }
 
-  var section = body.appendChild(create('qowt-doc'))
+  var section = container.appendChild(create('qowt-doc'))
       .appendChild(create('qowt-page'))
       .appendChild(create('qowt-section'));
 

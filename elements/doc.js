@@ -33,6 +33,10 @@ require([
     domReady: function() {
     },
 
+    zoom: function(scale) {
+      this.style['-webkit-transform'] = 'scale(' + scale + ')';
+    },
+
     paginate: function(page) {
       if (page === undefined) {
         // get the first page
@@ -112,20 +116,6 @@ require([
       // although it always should be...
       this.paginate(details.page);
       // this.zoom_(1);
-    },
-
-    zoom_: function(scale) {
-      // debugger;
-      var range = document.createRange();
-      range.selectNodeContents(this);
-      var innerSize = range.getBoundingClientRect();
-
-      this.style.height = (innerSize.height * scale) + 'px';
-      this.style.width = (innerSize.width * scale) + 'px';
-      document.body.scrollTop = '-' + (innerSize.height / scale) + 'px';
-      document.body.scrollLeft = '-' + (innerSize.width / scale) + 'px';
-
-      this.style['-webkit-transform'] = 'scale(' + scale + ')';
     }
 
   };
