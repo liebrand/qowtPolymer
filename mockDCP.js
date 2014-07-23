@@ -1,11 +1,21 @@
 
 window.init = function() {
+  document.getElementById('zoomin').onclick = function() {
+    var doc = document.querySelector('qowt-doc');
+    doc.zoomIn();
+  };
+  document.getElementById('zoomout').onclick = function() {
+    var doc = document.querySelector('qowt-doc');
+    doc.zoomOut();
+  };
+
   // fake the content creation coming in later than domReady
   window.setTimeout(doGenerateContent, 100);
 };
 
 function doGenerateContent() {
-  var container = document.getElementById('container');
+  // var container = document.getElementById('container');
+  var container = document.body;
 
   function create(type) {
     return document.createElement(type);

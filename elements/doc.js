@@ -19,6 +19,8 @@ require([
   var api_ = {
     supports_: ['something'],
 
+    scale: 1,
+
     /* jshint newcap: true */
     created: function() {
       this.setAttribute('contenteditable', 'true');
@@ -33,8 +35,28 @@ require([
     domReady: function() {
     },
 
-    zoom: function(scale) {
-      this.style['-webkit-transform'] = 'scale(' + scale + ')';
+    zoomIn: function() {
+      this.scale = Math.min(this.scale + 0.1, 5);
+    },
+    zoomOut: function() {
+      this.scale = Math.max(this.scale - 0.1, 0.2);
+    },
+
+    scaleChanged: function(oldScale, newScale) {
+      this.$.zoomable.style['-webkit-transform'] = 'scale(' + newScale + ')';
+      var scaledWidth = this.$.zoomable.offsetWidth * newScale;
+      if (scaledWidth > this.offsetWidth) {
+        // our zoomable is bursting out of our qowt-doc, so make sure
+        // we set our transform-origin-x to zero, or else it bursts
+        // out to the left where the scrollbars dont reach
+        console.log('bursting');
+        this.style['justify-content'] = 'flex-start';
+        this.$.zoomable.style['-webkit-transform-origin-x'] = '0%';
+      } else {
+        console.log('NOT bursting');
+        this.style['justify-content'] = 'center';
+        this.$.zoomable.style['-webkit-transform-origin-x'] = '50%';
+      }
     },
 
     paginate: function(page) {

@@ -1,14 +1,26 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<polymer-element name="qowt-doc" constructor="QowtDoc">
+<polymer-element name="qowt-doc" constructor="QowtDoc" attributes="scale">
   <template>
     <style type="text/css" media="screen">
       :host {
+        display: flex;
+        justify-content: center;
+        overflow: scroll;
+        height: 600px;
+        border: 1px solid green;
+      }
+      #zoomable {
         display: inline-block;
-        -webkit-transform-origin-y: 0;
-      };
+        /*align-self: center;*/
+        -webkit-transform-origin-y: 30%;
+        /*-webkit-transform-origin-x: 0;*/
+      }
+
     </style>
-    <content></content>
+    <div id="zoomable">
+      <content></content>
+    </div>
   </template>
   <script src="doc.js" type="text/javascript" charset="utf-8"></script>
 </polymer-element>
