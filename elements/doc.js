@@ -49,13 +49,12 @@ require([
         // our zoomable is bursting out of our qowt-doc, so make sure
         // we set our transform-origin-x to zero, or else it bursts
         // out to the left where the scrollbars dont reach
-        console.log('bursting');
         this.style['justify-content'] = 'flex-start';
         this.$.zoomable.style['-webkit-transform-origin-x'] = '0%';
       } else {
-        console.log('NOT bursting');
-        this.style['justify-content'] = 'center';
-        this.$.zoomable.style['-webkit-transform-origin-x'] = '50%';
+        // reset to defaults
+        this.style['justify-content'] = '';
+        this.$.zoomable.style['-webkit-transform-origin-x'] = '';
       }
     },
 

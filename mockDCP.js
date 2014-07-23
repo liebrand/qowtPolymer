@@ -14,8 +14,7 @@ window.init = function() {
 };
 
 function doGenerateContent() {
-  // var container = document.getElementById('container');
-  var container = document.body;
+  var container = document.getElementById('container');
 
   function create(type) {
     return document.createElement(type);
