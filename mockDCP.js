@@ -8,6 +8,18 @@ window.init = function() {
     var doc = document.querySelector('qowt-doc');
     doc.zoomOut();
   };
+  document.getElementById('zoomwidth').onclick = function() {
+    var doc = document.querySelector('qowt-doc');
+    doc.zoomToWidth();
+  };
+  document.getElementById('zoompage').onclick = function() {
+    var doc = document.querySelector('qowt-doc');
+    doc.zoomFullPage();
+  };
+  document.getElementById('zoomactual').onclick = function() {
+    var doc = document.querySelector('qowt-doc');
+    doc.zoomActualSize();
+  };
 
   // fake the content creation coming in later than domReady
   window.setTimeout(doGenerateContent, 100);

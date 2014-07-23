@@ -22,7 +22,7 @@ require([
     attached: function() {
       // Note: the order in which observers are called is based
       // on the order of CONSTRUCTION. Since we should always create
-      // pages "in order", this is good news. It means taht a mutation
+      // pages "in order", this is good news. It means that a mutation
       // on multiple pages will gaurantee that the observers are called
       // "in order" and thus we paginate (reflow) from top down
       this.mutationObserver_ = new MutationSummary({
@@ -32,8 +32,9 @@ require([
       });
     },
 
-    // TODO(jliebrand): do we need to add a 'detach' function that
-    // removes the mutation observer? or is that garbage collected?
+    detach: function() {
+      this.mutationObserver_.disconnect();
+    },
 
     ignoreMutations: function() {
       this.mutationObserver_.disconnect();
@@ -75,14 +76,7 @@ require([
     // ---------------------- PRIVATE ------------------
 
     handleMutations_: function(mutations) {
-      // console.log('handle mutations');
-      // TODO(jliebrand): would like to use polymer this.fire but that
-      // fires a normal dom event, which is not handled synchronously by
-      // listeners which means any changes made in handling the event (for
-      // example to paginate!) would result in additional mutation records
-      // being fired; which is not what i want. So I want a sync event and
-      // sync handling... use PubSub for now.
-      PubSub.publish('page-changed', {page: this});
+      this.fire('page-changed', {page: this});
     }
   };
 

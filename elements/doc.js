@@ -27,8 +27,7 @@ require([
     },
     attached: function() {
       console.log('doc attached');
-      PubSub.subscribe('page-changed', this.handlePageChanged_.bind(this));
-      document.addEventListener('keydown', this.handleKeyDown_.bind(this));
+      this.addEventListener('page-changed', this.handlePageChanged_.bind(this));
     },
     ready: function() {
     },
@@ -40,6 +39,24 @@ require([
     },
     zoomOut: function() {
       this.scale = Math.max(this.scale - 0.1, 0.2);
+    },
+
+    zoomToWidth: function() {
+      var page = this.currentVisiblePage_();
+      this.scale = (this.offsetWidth / page.offsetWidth) - 0.005;
+    },
+
+    zoomFullPage: function() {
+      var page = this.currentVisiblePage_();
+      this.scale = (this.offsetHeight / page.offsetHeight) - 0.005;
+
+      // scroll on an async; without this it doesn't always
+      // scroll to the right position...
+      this.async(page.scrollIntoView);
+    },
+
+    zoomActualSize: function() {
+      this.scale = 1;
     },
 
     scaleChanged: function(oldScale, newScale) {
@@ -89,55 +106,35 @@ require([
 
     // ---------------------- PRIVATE ---------------------
 
-    handleKeyDown_: function(evt) {
-      // debugger;
-      // var topLevelElements = [];
-      // var sel = window.getSelection();
-      // if (sel.rangeCount > 0) {
-      //   var range = sel.getRangeAt(0);
-      //   var walker = RangeUtils.createWalker(range);
-      //   while (walker.nextNode()) {
-      //     var node = walker.referenceNode;
-      //     while(node && !(node.parentNode instanceof QowtSection)) {
-      //       node = node.parentNode;
-      //     }
-      //     if (node && node.parentNode instanceof QowtSection) {
-      //       topLevelElements.push(node);
-      //     }
-      //     topLevelElements = ArrayUtils.unique(topLevelElements);
-      //   }
-      // }
-
-      // var i;
-      // // make sure all pages ignore any changes we make during unflow since
-      // // we do NOT want to paginate because of unflowing...
-      // var pages = document.querySelectorAll('qowt-page');
-      // for (i = 0; i < pages.length; i++) {
-      //   pages[i].ignoreMutations();
-      // }
-
-      // // unflow all relevant top level elements
-      // topLevelElements.forEach(function(element) {
-      //   if (element.supports && element.supports('flow') &&
-            // element.isFlowing()) {
-      //     element.unflow();
-      //   }
-      // });
-
-      // // and now re-enable the pages listening for mutations again so
-      // // that the subsequent edit that will happen WILL be picked up, and
-      // // it WILL cause a re-paginate
-      // for (i = 0; i < pages.length; i++) {
-      //   pages[i].listenForMutations();
-      // }
-    },
-
-    handlePageChanged_: function(details) {
+    handlePageChanged_: function(evt) {
       // TODO(jliebrand): could double check that page is in the dom
       // although it always should be...
-      this.paginate(details.page);
-      // this.zoom_(1);
+      this.paginate(evt.detail.page);
+    },
+
+    currentVisiblePage_: function() {
+      var el;
+      var ourRect = this.getBoundingClientRect();
+      var pointX = ourRect.left + (ourRect.width / 2);
+      var pointY = ourRect.top + (ourRect.height / 2);
+
+      // get the element located in the middle of our rect,
+      // repeat in case elementFromPoint hitTests in between pages
+      do {
+        el = window.document.elementFromPoint(pointX, pointY);
+        pointY -= 10;
+      } while (((el !== null) && (el.isSameNode(this))) && (pointY > 20));
+
+      // now walk up to the page
+      while (el && el.nodeName !== 'QOWT-PAGE') {
+        el = el.parentNode;
+      }
+
+      // check edge case just return the first page; should always be there.
+      return ((el === null) || (el.nodeName !== 'QOWT-PAGE')) ?
+          this.querySelector('qowt-page') : el;
     }
+
 
   };
 
