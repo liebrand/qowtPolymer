@@ -1,0 +1,68 @@
+:host {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  -webkit-box-pack: justify;
+
+  width: 500px;
+  height: 700px;
+  margin: auto auto 5mm auto;
+  padding: 5mm;
+  border: 1px solid red;
+}
+#contents {
+  -webkit-box-flex: 1;
+}
+
+/* Hide all empty header/footers */
+div[type=first-page]:empty,
+div[type=both]:empty,
+div[type=odd]:empty,
+div[type=even]:empty {
+  display: none;
+}
+
+/* Hide "first page" header/footer on all but first page */
+:host(:not(:first-child)) div[type=first-page] {
+  display: none;
+}
+
+/* Hide "first page" header/footer if it's disabled by dfp=false */
+qowt-header[dfp=false] div[type=first-page],
+qowt-footer[dfp=false] div[type=first-page] {
+  display: none;
+}
+
+/* Hide the odd/even/both header/footer on the first page if different first page "dfp" is true */
+qowt-header[dfp=true] div[type=both],
+qowt-header[dfp=true] div[type=odd],
+qowt-header[dfp=true] div[type=even],
+qowt-footer[dfp=true] div[type=both],
+qowt-footer[dfp=true] div[type=odd],
+qowt-footer[dfp=true] div[type=even] {
+  display: none;
+}
+
+/* Hide odd header/footer on even pages */
+:host(:nth-child(even)) div[type=odd] {
+  display: none;
+}
+
+/* Hide even header/footer on odd pages */
+:host(:nth-child(odd)) div[type=even] {
+  display: none;
+}
+
+/* Hide all odd & even header/footer if different odd even "doe" is false */
+qowt-header[doe=false] div[type=odd],
+qowt-header[doe=false] div[type=even],
+qowt-footer[doe=false] div[type=odd],
+qowt-footer[doe=false] div[type=even] {
+  display: none;
+}
+
+/* Hide the both header/footer if different odd even "doe" is true */
+qowt-header[doe=true] div[type=both],
+qowt-footer[doe=true] div[type=both] {
+  display: none;
+}

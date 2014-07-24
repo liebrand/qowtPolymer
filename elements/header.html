@@ -1,23 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<polymer-element name="qowt-header" constructor="QowtHeader">
-  <template>
-    <style type="text/css" media="screen">
-      :host {
-        display: block;
-        -webkit-box-flex: 0.000000000000001;
-        min-height: 2.54cm;
-        max-height: 40%;
+<link rel="import" href="headerFooterBase.html">
 
-        background: lightyellow;
-      }
-/*      :host(:nth-child(even)) {
-        background: blue;
-      }
-*/
-    </style>
-    <content></content>
-  </template>
+<polymer-element name="qowt-header" constructor="QowtHeader" extends="qowt-header-footer-base">
   <script src="header.js" type="text/javascript" charset="utf-8"></script>
 </polymer-element>
 

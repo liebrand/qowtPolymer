@@ -2,25 +2,8 @@
 
 <polymer-element name="qowt-doc" constructor="QowtDoc" attributes="scale">
   <template>
-    <style type="text/css" media="screen">
-      :host {
-        display: flex;
-        justify-content: center;
-        overflow: scroll;
-        height: 100%;
-        width: 100%;
-        border: 1px solid green;
-      }
-      #zoomable {
-        display: inline-block;
-        -webkit-transform-origin-y: 0;
-      }
+    <link rel="stylesheet" href="doc.css">
 
-/*      ::content qowt-page:nth-child(even)::shadow #header {
-        background: green;
-      }
-*/
-    </style>
     <div id="zoomable">
       <content></content>
     </div>

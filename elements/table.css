@@ -1,0 +1,6 @@
+:host {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid lightgray;
+  width: 300px;
+}

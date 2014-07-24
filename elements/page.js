@@ -58,8 +58,10 @@
         if (content) {
           target.appendChild(content);
         }
-        target.setAttribute('dfp', config.dfp);
-        target.setAttribute('doe', config.doe);
+        if (config) {
+          target.setAttribute('dfp', config.dfp);
+          target.setAttribute('doe', config.doe);
+        }
       }
       this.fire('page-changed', {page: this});
     },
