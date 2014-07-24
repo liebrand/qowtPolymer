@@ -13,11 +13,10 @@
     scale: 1,
 
     ready: function() {
-      this.setAttribute('contenteditable', 'true');
     },
 
     attached: function() {
-      console.log('doc attached');
+      this.setAttribute('contenteditable', 'true');
       this.addEventListener('page-changed', this.handlePageChanged_.bind(this));
     },
     ready: function() {
