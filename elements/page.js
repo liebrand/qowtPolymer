@@ -33,7 +33,7 @@
       });
     },
 
-    detach: function() {
+    detached: function() {
       this.mutationObserver_.disconnect();
     },
 
