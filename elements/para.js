@@ -1,19 +1,16 @@
-
-window.__customElementRegistry = window.__customElementRegistry || [];
-window.__customElementRegistry.push('QowtPara');
-
-require([
-  'utils/miscUtils',
-  'elements/mixin/element',
-  'elements/mixin/flowChildren'], function(
-    MiscUtils,
-    QowtElement,
-    FlowChildren) {
-
+(function() {
   'use strict';
+
+  var MiscUtils = require('utils/miscUtils');
+  var QowtElement = require('elements/mixin/element');
+  var FlowChildren = require('elements/mixin/flowChildren');
 
   var api_ = {
     supports_: ['something'],
+
+    ready: function() {
+    },
+
     jelte: function() {
       FlowChildren.jelte.call(this);
       console.log('jelte page: ' + this.nodeName);
@@ -22,7 +19,7 @@ require([
 
 
   /* jshint newcap: false */
-  Polymer('qowt-para', MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
+  Polymer('qowt-para', mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
-});
+})();

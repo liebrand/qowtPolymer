@@ -1,18 +1,16 @@
-window.__customElementRegistry = window.__customElementRegistry || [];
-window.__customElementRegistry.push('QowtTableRow');
-
-require([
-  'utils/miscUtils',
-  'elements/mixin/element',
-  'elements/mixin/flowCells'], function(
-    MiscUtils,
-    QowtElement,
-    FlowCells) {
-
+(function() {
   'use strict';
+
+  var MiscUtils = require('utils/miscUtils');
+  var QowtElement = require('elements/mixin/element');
+  var FlowCells = require('elements/mixin/flowCells');
 
   var api_ = {
     supports_: ['something'],
+
+    ready: function() {
+    },
+
     isEmpty: function() {
       // if all our cells our empty, then we are empty
       // (and can be removed during a normalize phase)
@@ -61,7 +59,7 @@ require([
 
 
   /* jshint newcap: false */
-  Polymer('qowt-table-row', MiscUtils.mergeMixin(QowtElement, FlowCells, api_));
+  Polymer('qowt-table-row', mergeMixin(QowtElement, FlowCells, api_));
   /* jshint newcap: true */
 
-});
+})();

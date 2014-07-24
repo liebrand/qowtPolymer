@@ -1,18 +1,9 @@
+(function() {
 
-window.__customElementRegistry = window.__customElementRegistry || [];
-window.__customElementRegistry.push('QowtDoc');
-
-require([
-  'utils/pubsub',
-  'utils/miscUtils',
-  'utils/rangeUtils',
-  'utils/arrayUtils',
-  'elements/mixin/element'], function(
-    PubSub,
-    MiscUtils,
-    RangeUtils,
-    ArrayUtils,
-    QowtElement) {
+  var MiscUtils = require('utils/miscUtils');
+  var RangeUtils = require('utils/rangeUtils');
+  var ArrayUtils = require('utils/arrayUtils');
+  var QowtElement = require('elements/mixin/element');
 
   'use strict';
 
@@ -21,10 +12,10 @@ require([
 
     scale: 1,
 
-    /* jshint newcap: true */
-    created: function() {
+    ready: function() {
       this.setAttribute('contenteditable', 'true');
     },
+
     attached: function() {
       console.log('doc attached');
       this.addEventListener('page-changed', this.handlePageChanged_.bind(this));
@@ -140,7 +131,7 @@ require([
 
 
   /* jshint newcap: false */
-  Polymer('qowt-doc', MiscUtils.mergeMixin(QowtElement, api_));
+  Polymer('qowt-doc', mergeMixin(QowtElement, api_));
   /* jshint newcap: true */
 
-});
+})();

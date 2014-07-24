@@ -1,16 +1,9 @@
-
-window.__customElementRegistry = window.__customElementRegistry || [];
-window.__customElementRegistry.push('QowtSection');
-
-require([
-  'utils/miscUtils',
-  'elements/mixin/element',
-  'elements/mixin/flowChildren'], function(
-    MiscUtils,
-    QowtElement,
-    FlowChildren) {
-
+(function() {
   'use strict';
+
+  var MiscUtils = require('utils/miscUtils');
+  var QowtElement = require('elements/mixin/element');
+  var FlowChildren = require('elements/mixin/flowChildren');
 
   var api_ = {
     supports_: ['something'],
@@ -63,9 +56,7 @@ require([
 
   /* jshint newcap: false */
   Polymer('qowt-section',
-      MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
+      mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
-});
-
-
+})();

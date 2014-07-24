@@ -1,18 +1,15 @@
-window.__customElementRegistry = window.__customElementRegistry || [];
-window.__customElementRegistry.push('QowtTableCell');
-
-require([
-  'utils/miscUtils',
-  'elements/mixin/element',
-  'elements/mixin/flowChildren'], function(
-    MiscUtils,
-    QowtElement,
-    FlowChildren) {
-
+(function() {
   'use strict';
+
+  var MiscUtils = require('utils/miscUtils');
+  var QowtElement = require('elements/mixin/element',);
+  var FlowChildren = require('elements/mixin/flowChildren');
 
   var api_ = {
     supports_: ['something'],
+
+    ready: function() {
+    },
 
     removeFromFlow: function() {
       // table cells THEMSELVEs should never just be
@@ -37,7 +34,7 @@ require([
 
   /* jshint newcap: false */
   Polymer('qowt-table-cell',
-      MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
+      mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
-});
+})();

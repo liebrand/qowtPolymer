@@ -15,23 +15,50 @@
     </style>
 
     <script src="../bower_components/platform/platform.js" type="text/javascript"></script>
+    <link rel="import" href="../bower_components/polymer/polymer.html">
+    <script src="utils/mutation-summary.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- // <script src="editor/mockEditor.js"></script> -->
+    <script src="mockDCP.js"></script>
 
     <script src="../utils/require.min.js" type="text/javascript"></script>
     <script>
       require.config({
         baseUrl: "../"
       });
+      require([
+        'elements/mixin/_all',
+        'utils/_all'], function() {
+          // usage:
+          // var proto = mergeMixin(BaseBehaviour, OtherBehaviour, api_);
+          window.mergeMixin = function() {
+            var mainArguments = Array.prototype.slice.call(arguments);
+
+            // start with an empty object
+            // (so that we dont physically change any mixin)
+            mainArguments.unshift({});
+
+            // add a merge function that can merge arrays like the "supports_" array
+            mainArguments.push(function(a, b) {
+              return _.isArray(a) ? a.concat(b) : undefined;
+            });
+
+            // use lodash to merge the mixins and apis etc
+            return _.merge.apply(null, mainArguments);
+          };
+
+          Polymer.import(['elements/_all.html'], function() {
+            init();
+          });
+      });
+
     </script>
 
     <!-- Finally load our Polymer element -->
-    <link rel="import" href="../elements/qowt.html">
-
-
-    <!-- // <script src="editor/mockEditor.js"></script> -->
-    <script src="mockDCP.js"></script>
+    <!-- <link rel="import" href="../elements/qowt.html"> -->
 
   </head>
-  <body onload="init()">
+  <body>
     <button id="zoomin">zoom in</button>
     <button id="zoomout">zoom out</button>
     <button id="zoomwidth">fit to width</button>

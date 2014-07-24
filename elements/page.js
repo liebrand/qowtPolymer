@@ -1,23 +1,18 @@
 
-window.__customElementRegistry = window.__customElementRegistry || [];
-window.__customElementRegistry.push('QowtPage');
-
-require([
-  'utils/pubsub',
-  'utils/mutation-summary',
-  'utils/miscUtils',
-  'elements/mixin/element',
-  'elements/mixin/flowChildren'], function(
-    PubSub,
-    MutationSummaryDep,
-    MiscUtils,
-    QowtElement,
-    FlowChildren) {
-
+(function() {
   "use strict";
+
+  var MiscUtils = require('utils/miscUtils');
+  var QowtElement = require('elements/mixin/element');
+  var FlowChildren = require('elements/mixin/flowChildren');
 
   var api_ = {
     supports_: ['something'],
+
+    ready: function() {
+      this.addEventListener('header-changed', this.updateHeader);
+      this.addEventListener('footer-changed', this.updateFooter);
+    },
 
     attached: function() {
       // Note: the order in which observers are called is based
@@ -41,11 +36,6 @@ require([
     },
     listenForMutations: function() {
       this.mutationObserver_.reconnect();
-    },
-
-    ready: function() {
-      this.addEventListener('header-changed', this.updateHeader);
-      this.addEventListener('footer-changed', this.updateFooter);
     },
 
     // TODO(jliebrand): remove duplication between header and footer functions
@@ -81,10 +71,10 @@ require([
   };
 
 
-  var QowtPageProto = MiscUtils.mergeMixin(QowtElement, FlowChildren, api_);
+  var QowtPageProto = mergeMixin(QowtElement, FlowChildren, api_);
 
   /* jshint newcap: false */
   Polymer('qowt-page', QowtPageProto);
   /* jshint newcap: true */
 
-});
+})();
