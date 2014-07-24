@@ -90,7 +90,7 @@ function doGenerateContent() {
       .appendChild(create('qowt-page'))
       .appendChild(create('qowt-section'));
 
-
+// debugger;
   section.createHFItem('header', 'odd', document.createDocumentFragment()
       .appendChild(createPara('this is a header')));
 

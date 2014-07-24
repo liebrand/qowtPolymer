@@ -2,7 +2,7 @@
   'use strict';
 
   var MiscUtils = require('utils/miscUtils');
-  var QowtElement = require('elements/mixin/element',);
+  var QowtElement = require('elements/mixin/element');
   var FlowChildren = require('elements/mixin/flowChildren');
 
   var api_ = {

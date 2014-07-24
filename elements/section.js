@@ -11,35 +11,32 @@
     created: function() {
       // debugger;
     },
-    ready: function() {
-    },
-    domReady: function() {
+    attached: function() {
+      this.fire('header-footer-changed');
     },
 
     createHFItem: function(hf, pageType, docFrag) {
-      // debugger;
       // TODO(jliebrand): should REPLACE existing 'type' items
+      debugger;
       var hft = document.createElement('template');
       hft.content.appendChild(docFrag);
       hft.setAttribute('data-hf-type', hf);
       hft.setAttribute('data-hf-page-type', pageType);
 
       this.$.headerFooterTemplates.appendChild(hft);
-      var evt = new CustomEvent('header-footer-change', {bubbles: true});
-      hft.dispatchEvent(evt);
+      this.fire('header-footer-changed');
     },
 
     getHFContent: function(hf, pageType) {
-      // debugger;
+      debugger;
       var templates = this.$.headerFooterTemplates;
-      var typeCheck = '[data-hf-type="' + hf + '"] ';
+      var typeCheck = '[data-hf-type="' + hf + '"]';
       var pageCheck = '[data-hf-page-type="' + pageType + '"]';
-      var header = templates.querySelector(typeCheck + pageCheck);
-      return header.content.cloneNode(true);
+      var hf = templates.querySelector(typeCheck + pageCheck);
+      return hf && hf.content.cloneNode(true);
     },
 
     cloneMe: function() {
-      // debugger;
       var clone = this.cloneNode(false);
       var templates = this.$.headerFooterTemplates;
       var headersFooters = templates.querySelectorAll('template');

@@ -10,8 +10,7 @@
     supports_: ['something'],
 
     ready: function() {
-      this.addEventListener('header-changed', this.updateHeader);
-      this.addEventListener('footer-changed', this.updateFooter);
+      this.addEventListener('header-footer-changed', this.updateHeaderFooter.bind(this));
     },
 
     attached: function() {
@@ -38,6 +37,15 @@
       this.mutationObserver_.reconnect();
     },
 
+    updateHeaderFooter: function(evt) {
+      this.updateHeader();
+      this.updateFooter();
+      // var target = (evt.detail.hf.getAttribute('data-hf-type') === 'footer') ?
+      //     this.$.footer : this.$.header;
+
+      // target.appendChild(document.importNode(evt.detail.hf.content, true));
+    },
+
     // TODO(jliebrand): remove duplication between header and footer functions
     updateHeader: function() {
       // get header/footer information from FIRST section on page
@@ -45,7 +53,10 @@
 
       if (section) {
         this.$.header.clear();
-        this.$.header.appendChild(section.getHeaderContent('odd'));
+        var header = section.getHFContent('header', 'odd');
+        if (header) {
+          this.$.header.appendChild(header);
+        }
       }
     },
 
@@ -55,7 +66,10 @@
 
       if (section) {
         this.$.footer.clear();
-        this.$.footer.appendChild(section.getFooterContent('odd'));
+        var footer = section.getHFContent('footer', 'odd');
+        if (footer) {
+          this.$.footer.appendChild(footer);
+        }
       }
     },
 
