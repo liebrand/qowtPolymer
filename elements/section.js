@@ -8,46 +8,70 @@
   var api_ = {
     supports_: ['something'],
 
-    created: function() {
-      // debugger;
-    },
-    attached: function() {
-      this.fire('header-footer-changed');
+    ready: function() {
+      this.listenForUpdates_();
     },
 
-    createHFItem: function(hf, pageType, docFrag) {
-      // TODO(jliebrand): should REPLACE existing 'type' items
-      debugger;
-      var hft = document.createElement('template');
-      hft.content.appendChild(docFrag);
-      hft.setAttribute('data-hf-type', hf);
-      hft.setAttribute('data-hf-page-type', pageType);
-
-      this.$.headerFooterTemplates.appendChild(hft);
-      this.fire('header-footer-changed');
+    getHeaderItem: function(type) {
+      return this.getHFItem_('header', type);
     },
 
-    getHFContent: function(hf, pageType) {
-      debugger;
-      var templates = this.$.headerFooterTemplates;
-      var typeCheck = '[data-hf-type="' + hf + '"]';
-      var pageCheck = '[data-hf-page-type="' + pageType + '"]';
-      var hf = templates.querySelector(typeCheck + pageCheck);
-      return hf && hf.content.cloneNode(true);
+    getFooterItem: function(type) {
+      return this.getHFItem_('footer', type);
+    },
+
+    getHeaderContent: function() {
+      return document.importNode(this.$.headerTemplates.content, true);
+    },
+
+    getFooterContent: function() {
+      return document.importNode(this.$.footerTemplates.content, true);
     },
 
     cloneMe: function() {
       var clone = this.cloneNode(false);
-      var templates = this.$.headerFooterTemplates;
-      var headersFooters = templates.querySelectorAll('template');
-      for (var i = 0; i < headersFooters.length; i++) {
-        var hft = headersFooters[i];
-        var hfType = hft.getAttribute('data-hf-type');
-        var pageType = hft.getAttribute('data-hf-page-type');
-        clone.createHFItem(hfType, pageType, hft.content);
-      }
+      clone.$.headerTemplates.content.appendChild(this.getHeaderContent());
+      clone.$.footerTemplates.content.appendChild(this.getFooterContent());
       return clone;
-    }
+    },
+
+
+    // ------------------------- PRIVATE ------------------------
+
+
+    listenForUpdates_: function() {
+      var headers = this.$.headerTemplates.content;
+      var footers = this.$.footerTemplates.content;
+      this.onMutation(headers, this.headerTemplatesUpdated_);
+      this.onMutation(footers, this.footerTemplatesUpdated_);
+    },
+
+    getHFItem_: function(hf, type) {
+      var source = (hf === 'header') ?
+          this.$.headerTemplates :
+          this.$.footerTemplates;
+
+      var item = source.content.querySelector('[type=' + type + ']');
+
+      if (!item) {
+        item = document.createElement('div');
+        item.setAttribute('type', type);
+        source.content.appendChild(item);
+      }
+      return item;
+    },
+
+    headerTemplatesUpdated_: function(observer, mutations) {
+      this.listenForUpdates_();
+      this.fire('header-changed');
+    },
+
+    footerTemplatesUpdated_: function(observer, mutations) {
+      this.listenForUpdates_();
+      this.fire('footer-changed');
+    },
+
+
   };
 
 

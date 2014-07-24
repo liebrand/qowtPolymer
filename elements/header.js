@@ -8,6 +8,7 @@
     supports_: ['something'],
 
     ready: function() {
+      this.setAttribute('pseudo', 'x-header');
     },
 
     clear: function() {

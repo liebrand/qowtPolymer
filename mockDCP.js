@@ -90,12 +90,33 @@ function doGenerateContent() {
       .appendChild(create('qowt-page'))
       .appendChild(create('qowt-section'));
 
-// debugger;
-  section.createHFItem('header', 'odd', document.createDocumentFragment()
-      .appendChild(createPara('this is a header')));
+  section.headerConfig = {
+    dfp: true,
+    doe: true,
+    topMargin: '1cm'
+  };
+  section.footerConfig = {
+    dfp: true,
+    doe: true,
+    topMargin: '0.5cm'
+  };
 
-  section.createHFItem('footer', 'odd', document.createDocumentFragment()
-      .appendChild(createPara('this is a footer')));
+  section.getHeaderItem('first-page')
+    .appendChild(createPara('this is an first-page header'));
+  section.getHeaderItem('odd')
+      .appendChild(createPara('this is an odd header'));
+  section.getHeaderItem('even')
+      .appendChild(createPara('this is an even header'));
+
+  section.getHeaderItem('both');
+
+  section.getFooterItem('first-page')
+    .appendChild(createPara('this is an first-page footer'));
+  section.getFooterItem('odd')
+      .appendChild(createPara('this is an odd footer'));
+  section.getFooterItem('even')
+      .appendChild(createPara('this is an even footer'));
+
 
   section.appendChild(createParas(2));
 

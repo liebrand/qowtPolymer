@@ -10,11 +10,18 @@
     supports_: ['something'],
 
     ready: function() {
-      this.addEventListener('header-footer-changed', this.updateHeaderFooter.bind(this));
+      var headerUpdated = this.updateHeaderFooter.bind(this, 'header');
+      var footerUpdated = this.updateHeaderFooter.bind(this, 'footer');
+      this.addEventListener('header-changed', headerUpdated);
+      this.addEventListener('footer-changed', footerUpdated);
+      this.classList.add('page');
     },
 
     attached: function() {
-      // Note: the order in which observers are called is based
+      // We use the mutation summary library rather than
+      // the polymer sugar "this.onMutation" because we need
+      // to be able to support ignoring mutations (eg disconnect)
+      // Note: the order in which mutation observers are called is based
       // on the order of CONSTRUCTION. Since we should always create
       // pages "in order", this is good news. It means that a mutation
       // on multiple pages will gaurantee that the observers are called
@@ -37,40 +44,24 @@
       this.mutationObserver_.reconnect();
     },
 
-    updateHeaderFooter: function(evt) {
-      this.updateHeader();
-      this.updateFooter();
-      // var target = (evt.detail.hf.getAttribute('data-hf-type') === 'footer') ?
-      //     this.$.footer : this.$.header;
-
-      // target.appendChild(document.importNode(evt.detail.hf.content, true));
-    },
-
-    // TODO(jliebrand): remove duplication between header and footer functions
-    updateHeader: function() {
-      // get header/footer information from FIRST section on page
+    updateHeaderFooter: function(type, event) {
+      var target = (type === 'header') ? this.$.header : this.$.footer;
+      // only update header/footer information
+      // if it's the FIRST section on the page
       var section = this.querySelectorAll('qowt-section')[0];
-
-      if (section) {
-        this.$.header.clear();
-        var header = section.getHFContent('header', 'odd');
-        if (header) {
-          this.$.header.appendChild(header);
+      if (event.srcElement.isSameNode(section)) {
+        target.clear();
+        var content = (type === 'header') ?
+            section.getHeaderContent() : section.getFooterContent();
+        var config = (type === 'header') ?
+            section.headerConfig : section.footerConfig;
+        if (content) {
+          target.appendChild(content);
         }
+        target.setAttribute('dfp', config.dfp);
+        target.setAttribute('doe', config.doe);
       }
-    },
-
-    updateFooter: function() {
-      // get header/footer information from FIRST section on page
-      var section = this.querySelectorAll('qowt-section')[0];
-
-      if (section) {
-        this.$.footer.clear();
-        var footer = section.getHFContent('footer', 'odd');
-        if (footer) {
-          this.$.footer.appendChild(footer);
-        }
-      }
+      this.fire('page-changed', {page: this});
     },
 
     isOverflowing: function() {
@@ -80,6 +71,7 @@
     // ---------------------- PRIVATE ------------------
 
     handleMutations_: function(mutations) {
+      // fire page changed event, which will trigger pagination
       this.fire('page-changed', {page: this});
     }
   };
