@@ -20,7 +20,7 @@
 
 
   /* jshint newcap: false */
-  Polymer('qowt-footer', mergeMixin(QowtElement, api_));
+  Polymer('qowt-footer', MiscUtils.mergeMixin(QowtElement, api_));
   /* jshint newcap: true */
 
 })();

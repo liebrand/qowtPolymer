@@ -16,7 +16,7 @@
 
 
   /* jshint newcap: false */
-  Polymer('qowt-run', mergeMixin(QowtElement, FlowWords, api_));
+  Polymer('qowt-run', MiscUtils.mergeMixin(QowtElement, FlowWords, api_));
   /* jshint newcap: true */
 
 })();

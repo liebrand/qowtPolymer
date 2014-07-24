@@ -71,7 +71,7 @@
   };
 
 
-  var QowtPageProto = mergeMixin(QowtElement, FlowChildren, api_);
+  var QowtPageProto = MiscUtils.mergeMixin(QowtElement, FlowChildren, api_);
 
   /* jshint newcap: false */
   Polymer('qowt-page', QowtPageProto);

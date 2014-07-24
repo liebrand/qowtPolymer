@@ -34,7 +34,7 @@
 
   /* jshint newcap: false */
   Polymer('qowt-table-cell',
-      mergeMixin(QowtElement, FlowChildren, api_));
+      MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
 })();

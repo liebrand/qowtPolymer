@@ -56,7 +56,7 @@
 
   /* jshint newcap: false */
   Polymer('qowt-section',
-      mergeMixin(QowtElement, FlowChildren, api_));
+      MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
 })();

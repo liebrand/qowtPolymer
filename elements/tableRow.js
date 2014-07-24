@@ -59,7 +59,7 @@
 
 
   /* jshint newcap: false */
-  Polymer('qowt-table-row', mergeMixin(QowtElement, FlowCells, api_));
+  Polymer('qowt-table-row', MiscUtils.mergeMixin(QowtElement, FlowCells, api_));
   /* jshint newcap: true */
 
 })();

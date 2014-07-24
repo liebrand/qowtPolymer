@@ -19,7 +19,7 @@
 
 
   /* jshint newcap: false */
-  Polymer('qowt-header', mergeMixin(QowtElement, api_));
+  Polymer('qowt-header', MiscUtils.mergeMixin(QowtElement, api_));
   /* jshint newcap: true */
 
 })();

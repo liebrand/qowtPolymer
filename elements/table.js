@@ -16,7 +16,7 @@
 
 
   /* jshint newcap: false */
-  Polymer('qowt-table', mergeMixin(QowtElement, FlowChildren, api_));
+  Polymer('qowt-table', MiscUtils.mergeMixin(QowtElement, FlowChildren, api_));
   /* jshint newcap: true */
 
 })();

@@ -130,7 +130,7 @@
 
 
   /* jshint newcap: false */
-  Polymer('qowt-doc', mergeMixin(QowtElement, api_));
+  Polymer('qowt-doc', MiscUtils.mergeMixin(QowtElement, api_));
   /* jshint newcap: true */
 
 })();
